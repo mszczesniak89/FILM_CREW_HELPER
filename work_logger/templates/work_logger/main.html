@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block zawartosc %}
+
+ <form action="" method="get">
+    <div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th><h5 style="color:#424242; font-family:'Quicksand';">SEARCH BY:</h5></th>
+                {% for field in filter.form %}
+                    <td ><h5 style="color:#424242; font-family:'Quicksand';">{{ field.label }} {{ field }}</h5></td>
+                {% endfor %}
+                    <td><button type="submit" class="btn btn-outline-secondary" style="font-family:'Quicksand';">
+                        Search</button></td>
+            </tr>
+            <tr>
+                <td colspan="4"><a class="nav-item nav-link" href="{% url 'create-project-view' %}"><h5
+                        style="color:#424242; font-family:'Quicksand';">ADD NEW PROJECT</h5></a></td>
+            </tr>
+        </thead>
+    </table>
+    </div>
+ </form>
+
+{% if object_list %}
+    <div class="table-wrapper" style="max-height: 420px; width: auto;overflow-x: hidden; overflow-y: auto">
+    <table class="fl-table">
+        <thead class="sticky-top">
+        <tr>
+            <th><h2 style="color:#424242; font-family:'Quicksand';">Project name:</h2></th>
+            <th><h2 style="color:white; font-family:'Quicksand';">Description:</h2></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in object_list %}
+        <tr>
+            <td><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4 style="color:#424242; font-family:'Quicksand';">{{item.name}}</h4></a></td>
+            <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.description }}</h5></td>
+            <td><a class="nav-item nav-link" href="{{ item.get_delete_url }}"><h5 style="color:#424242; font-family:'Quicksand';">DELETE</h5></a></td>
+        </tr>
+        {% endfor %}
+
+        <tbody>
+    </table>
+    </div>
+
+{% else %}
+    <div class="table-wrapper">
+    <div class="d-flex justify-content-center">
+    <h1 style="color:#424242; font-family:'Quicksand';">No projects found!</h1>
+    </div>
+    </div>
+{% endif %}
+
+
+{% endblock %}

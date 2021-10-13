@@ -1,0 +1,168 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <title>Document</title>
+
+</head>
+<body>
+
+
+<div class="navbar sticky-top navbar-light bg-light navbar-expand-lg justify-content-around">
+    <div class="navbar-nav text-uppercase ">
+    <h1 style="color:#424242; font-family:'Quicksand'; font-size: 60px"><a class="nav-item nav-link" href="{% url 'index-view' %}" >Film Crew Helper</a></h1>
+    </div>
+    <div class="navbar-nav text-uppercase ">
+        <a class="nav-item nav-link active" href="#"> <span class="sr-only"></span></a>
+        <a class="nav-item nav-link" href="{% url 'index-view' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">Home</span></a>
+        <a class="nav-item nav-link" href="#"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">About</span></a>
+        <a class="nav-item nav-link" href="#"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">Contact</span></a>
+        {% if not user.is_authenticated %}
+        <a class="nav-item nav-link" href="{% url 'login' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">Login</span></a>
+        {% else %}
+        <a class="nav-item nav-link" href="{% url 'logout' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">Logout</span></a>
+        {% endif %}
+    </div>
+
+</div>
+
+<div
+    class="bg"
+    style="
+    background-image: url('/static/images/background.png');
+    padding-top: 10.5rem;
+    padding-bottom: 6rem;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    background-size: cover;
+  "
+>
+
+
+{% block zawartosc %}
+
+
+{% endblock %}
+</div>
+ <footer class="footer bg-light py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div style="color:#424242; font-family:'Quicksand';" class="col-lg-4 text-lg-start">Copyright &copy; Mateusz Szcześniak</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <a class="btn btn-dark btn-social mx-2" href="https://www.imdb.com/name/nm4522975/"><i class="fab fa-imdb fa-2x"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in fa-2x"></i></a>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+{#<div class="container">#}
+{#    <div class="row">#}
+{#        <div class="col-md-12">#}
+{#            <div class="modal fade" id="modal" >#}
+{#                <div class="modal-dialog modal-md">#}
+{#                    <div class="modal-content">#}
+{#                        <div class="modal-body">#}
+{#                            <div class="container-fluid">#}
+{#                            <div class="row">#}
+{#                            <div class="container h-100">#}
+{#                            <div class="d-flex justify-content-center h-100">#}
+{#                            <div class="user_card">#}
+{#                            <div class="d-flex justify-content-center">#}
+{##}
+{##}
+{#                            <h3 id="form-title" style="color:#424242; font-family:'Quicksand';">CREATE NEW PROJECT</h3>#}
+{#                            </div>#}
+{#                            <div class="d-flex justify-content-center form_container">#}
+{#                            <form method="POST" action="">#}
+{#                            {% csrf_token %}#}
+{#                            <div class="input-group mb-3">#}
+{#                            <div class="input-group-append">#}
+{##}
+{#                            </div>#}
+{##}
+{#                            {{ project_form.name }}#}
+{#                            </div>#}
+{#                            <div class="input-group mb-2">#}
+{#                            <div class="input-group-append">#}
+{##}
+{#                            </div>#}
+{##}
+{#                            {{ project_form.description }}#}
+{#                            </div>#}
+{##}
+{#                            <div class="d-flex justify-content-center mt-3 login_container">#}
+{#                            <input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit" value="SUBMIT">#}
+{#                            </div>#}
+{#                            </form>#}
+{##}
+{##}
+{#                            </div>#}
+{#                            </div>#}
+{#                            </div>#}
+{#                            </div>#}
+{##}
+{##}
+{#                        <div class="d-flex justify-content-center modal-footer">#}
+{#                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-project").modalForm({
+        formURL: "{% url 'create_project_bs' %}"
+    });
+
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-terms").modalForm({
+        formURL: "{% url 'create_terms_bs' %}"
+    });
+
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-crew-member").modalForm({
+        formURL: "{% url 'create_crew_member_bs' %}"
+    });
+
+});
+</script>
+</body>
+
+</html>
