@@ -70,73 +70,43 @@
                             <div class="d-flex justify-content-center">
 
 
-                            <h3 id="form-title" style="color:#424242; font-family:'Quicksand';">CREATE NEW TERMS</h3>
+                              <h3 id="form-title" style="color:#424242; font-family:'Quicksand';">CREATE CREW MEMBER</h3>
                             </div>
-                            <div class="d-flex justify-content-center form_container mt-1">
+                            <div class="d-flex justify-content-center form_container">
                             <form method="POST" action="">
                             {% csrf_token %}
-                            <div class="input-group mb-2">
+                            <div class="input-group mb-3">
                             <div class="input-group-append">
 
                             </div>
 
                             {{ form.name }}
                             </div>
-
                             <div class="input-group mb-2">
                             <div class="input-group-append">
 
                             </div>
 
-                            {{ form.pay_period }}
+                            {{ form.surname }}
                             </div>
-                            <div class="input-group mb-2">
+                             <div class="input-group mb-2">
                             <div class="input-group-append">
 
                             </div>
 
-                            {{ form.working_hours }}
-                            </div>
-                            <div class="input-group mb-2">
-                            <div class="input-group-append">
-
-                            </div>
-
-                            {{ form.base_rate }}
+                            {{ form.position }}
                             </div>
                             <div class="input-group mb-2">
                             <div class="input-group-append">
 
                             </div>
 
-                            {{ form.ot_rate }}
-                            </div>
-                            <div class="input-group mb-2">
-                            <div class="input-group-append">
-
-                            </div>
-
-                            {{ form.camera_ot_rate }}
-                            </div>
-                            <div class="input-group mb-2">
-                            <div class="input-group-append">
-
-                            </div>
-
-                            {{ form.extras }}
-                            </div>
-                            <div class="input-group mb-2">
-                            <div class="input-group-append">
-
-                            </div>
-
-                            {{ form.description }}
+                            {{ form.contact_info }}
                             </div>
                             <div class="d-flex justify-content-center mt-3 login_container">
                             <input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit" value="SUBMIT">
                             </div>
                             </form>
-
 
                             </div>
                             <div class="d-flex justify-content-center mt-3">

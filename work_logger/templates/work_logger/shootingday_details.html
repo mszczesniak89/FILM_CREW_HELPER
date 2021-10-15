@@ -78,43 +78,28 @@
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
-				<div class="d-flex justify-content-center">
+                <div class="card-body text-center">
+                    <p><h2 id="form-title" style="color:#424242; font-family:'Quicksand';">{{ object.subproject.parent }} - {{ object.subproject }}</h2>
+                    <p><h3 id="form-title" style="color:#424242; font-family:'Quicksand';">Shooting day: {{ object.name }}</h3>
+                </div>
+                <div class="d-flex justify-content-center">
+                <div class="card-body text-center">
+
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Date: {{ object.date }}</h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Start time: {{ object.start_hour.time }}</h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >End time: {{ object.end_hour.time }} </h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Overtime: {{ object.ot }} </h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Camera overtime: {{ object.camera_ot }} </h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >TOC: {{ object.toc }} </h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Extras: {{ object.extras }} </h5>
+                <p><h5 class="card-text" style="color:#424242; font-family:'Quicksand';" >Description: {{ object.description }} </h5>
+                </div>
+                </div>
 
 
-					<h3 id="form-title" style="color:#424242; font-family:'Quicksand';">UPDATE {{ item_type }}</h3>
-				</div>
-				<div class="d-flex justify-content-center form_container">
-					<form method="POST" action="">
-                         {% csrf_token %}
-                        {% for field in form %}
-						<div class="input-group mb-2">
-							<div class="input-group-append">
-
-							</div>
-
-                            {{ field }}
-						</div>
-                        {% endfor %}
-
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 				<input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit" value="SUBMIT">
-				   			</div>
-					</form>
-
-
-				</div>
                 <div class="d-flex justify-content-center mt-3">
-                    {% if item_type == "PROJECT" or item_type == "TERMS" %}
-                 <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO PROJECTS</h6>
-                    {% elif item_type == "SUB-PROJECT" %}
-                <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=object.id %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO {{ item_type }}S</h6>
-                    {% elif item_type == "SHOOTING DAY" %}
-                <a class="nav-item nav-link p-0" href="{% url 'shooting-days-view' pk=object.id %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO {{ item_type }}S</h6>
-                     {% endif %}
-
+                 <a class="nav-item nav-link p-0" href="{% url 'shooting-days-view' pk=object.subproject.id %}">
+                <h6 style="color:#424242; font-family:'Quicksand';">BACK TO {{ item_type }}S</h6>
                 </a>
                 </div>
                 {{form.errors}}

@@ -15,8 +15,25 @@
             <tr>
                 <td colspan="5"><a class="nav-item nav-link p-0" href="{% url 'create-subproject-view' pk=project.id %}">
                     <h5 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW SUB-PROJECT</h5></a>
-                    <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
-                        <h6 class="mt-0 mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW TERMS</h6></a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+
+                        <div class="mt-0 mb-0 d-flex justify-content-center"  style="color:#424242; font-family:'Quicksand';">
+                            <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
+                                <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW TERMS</h6>
+                            </a>
+                              <a class="nav-item nav-link" href="{% url 'terms-view' pk=project.id%}">
+                                  <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">VIEW TERMS</h6>
+                            </a>
+                              <a class="nav-item nav-link" href="{% url 'create_crew_member' pk=project.id %}">
+                                <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD CREW MEMBERS</h6>
+                            </a>
+                              <a class="nav-item nav-link" href="{% url 'crew-members-view' pk=project.id%}">
+                                  <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">VIEW CREW MEMBERS</h6>
+                            </a>
+                            </div>
                 </td>
             </tr>
 
@@ -51,8 +68,10 @@
             <td><h4 style="color:#424242; font-family:'Quicksand';">{{item.position}}</h4></td>
             <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.description }}</h5></td>
 
-            <td><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6 style="color:#424242; font-family:'Quicksand';">UPDATE</h6></a>
-            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DELETE</h6></a>
+            <td>
+                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_detail_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DETAILS</h6></a>
+                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6 style="color:#424242; font-family:'Quicksand';">UPDATE</h6></a>
+                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DELETE</h6></a>
             </td>
         </tr>
         {% endfor %}

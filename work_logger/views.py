@@ -5,13 +5,13 @@ from django.http import request, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, ListView, DeleteView, UpdateView
+from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
 from accounts.models import CustomUser
 from accounts.forms import CustomUserCreationForm
-from work_logger.models import Project, SubProject, ShootingDay
-from work_logger.filters import ProjectFilter, SubProjectFilter, ShootingDayFilter
+from work_logger.models import Project, SubProject, ShootingDay, Terms, CrewMember
+from work_logger.filters import ProjectFilter, SubProjectFilter, ShootingDayFilter, TermsFilter, CrewMembersFilter
 from work_logger.forms import ProjectCreateForm, SubProjectCreateForm, ProjectCreateFormBS, TermsCreateFormBS, \
-    CrewMemberCreateFormBS, ShootingDayCreateForm, TermsCreateForm
+    CrewMemberCreateFormBS, ShootingDayCreateForm, TermsCreateForm, CrewMemberCreateForm
 from django_filters.views import FilterView
 from bootstrap_modal_forms.generic import BSModalCreateView
 
@@ -23,6 +23,30 @@ class IndexView(View):
         response = render(request, 'work_logger/home_page.html', )
         return response
 
+    def post(self, request):
+        response = render(request, 'work_logger/home_page.html', )
+        return response
+
+
+class AboutView(View):
+    def get(self, request):
+        response = render(request, 'work_logger/about.html', )
+        return response
+
+    def post(self, request):
+        response = render(request, 'work_logger/about.html', )
+        return response
+
+
+class ContactView(View):
+    def get(self, request):
+        response = render(request, 'work_logger/contact.html', )
+        return response
+
+    def post(self, request):
+        response = render(request, 'work_logger/contact.html', )
+        return response
+
 
 class MainPageView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
@@ -31,6 +55,20 @@ class MainPageView(LoginRequiredMixin, FilterView):
     context_object_name = 'object_list'
     filterset_class = ProjectFilter
     template_name = 'work_logger/main.html'
+
+
+class TermsView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        return Terms.objects.filter(user=self.request.user)
+    model = Terms
+    context_object_name = 'object_list'
+    filterset_class = TermsFilter
+    template_name = 'work_logger/terms.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
 
 
 class SubProjectsView(LoginRequiredMixin, FilterView):
@@ -278,5 +316,97 @@ class UpdateShootingDayView(UpdateView):
         form_kwargs['user'] = self.request.user
         return form_kwargs
 
+
+class ShootingDayDetailView(DetailView):
+    model = ShootingDay
+    template_name = 'work_logger/shootingday_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "SHOOTING DAY"
+        return context
+
+
+class DeleteTermsView(DeleteView):
+    model = Terms
+    success_url = reverse_lazy('main-page')
+    template_name = 'work_logger/delete_form.html'
+
+
+class UpdateTermsView(UpdateView):
+    model = Terms
+    success_url = reverse_lazy('main-page')
+    template_name = 'work_logger/update_form.html'
+    # fields = '__all__'
+    form_class = TermsCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "TERMS"
+        return context
+
+
+class CrewMembersView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        return CrewMember.objects.filter(user=self.request.user)
+    model = CrewMember
+    context_object_name = 'object_list'
+    filterset_class = CrewMembersFilter
+    template_name = 'work_logger/crew_members.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+
+class CrewMemberCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'work_logger/create_crew_member.html'
+    form_class = CrewMemberCreateForm
+    success_message = 'Success: Crew member created.'
+    # success_url = reverse_lazy('main-page')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        f = form.save(commit=False)
+        f.user = user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('crew-members-view', kwargs={'pk': self.kwargs['pk']})
+
+
+class UpdateCrewMemberView(LoginRequiredMixin, UpdateView):
+    model = CrewMember
+    success_url = reverse_lazy('main-page')
+    template_name = 'work_logger/update_form.html'
+    # fields = '__all__'
+    form_class = CrewMemberCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "CREW MEMBER"
+        return context
+
+
+class DeleteCrewMemberView(LoginRequiredMixin, DeleteView):
+    model = CrewMember
+    success_url = reverse_lazy('main-page')
+    template_name = 'work_logger/delete_form.html'
+
+
+class SubProjectDetailView(LoginRequiredMixin, DetailView):
+    model = SubProject
+    template_name = 'work_logger/subproject_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "SUB-PROJECT"
+        return context
 
 

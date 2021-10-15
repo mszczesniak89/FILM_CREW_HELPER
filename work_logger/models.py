@@ -39,6 +39,9 @@ class SubProject(models.Model):
     def get_update_url(self):
         return reverse('update_subproject_view', args=(self.pk,))
 
+    def get_detail_url(self):
+        return reverse('subproject_detail_view', args=(self.pk,))
+
     def __str__(self):
         return self.name
 
@@ -51,6 +54,13 @@ PAY_PERIODS = (
     (4, "Per Job"),
 )
 
+WORKING_HOURS = (
+    ('', 'Select Working Hours'),
+    (1, "10hr Continuous Day"),
+    (2, "11hr Day"),
+    (3, "12hr Day")
+)
+
 
 class Terms(models.Model):
     name = models.CharField(max_length=128)
@@ -61,12 +71,12 @@ class Terms(models.Model):
     camera_ot_rate = models.DecimalField(max_digits=10, decimal_places=2)
     extras = models.DecimalField(max_digits=10, decimal_places=2)
 
-    class WorkingHours(models.IntegerChoices):
-        CONT_10_HRS = 1, '10hr Continuous Day'
-        REG_11_HRS = 2, '11hr Day'
-        REG_12_HRS = 3, '12hr Day'
+    # class WorkingHours(models.IntegerChoices):
+    #     CONT_10_HRS = 1, '10hr Continuous Day'
+    #     REG_11_HRS = 2, '11hr Day'
+    #     REG_12_HRS = 3, '12hr Day'
 
-    working_hours = models.IntegerField(choices=WorkingHours.choices)
+    working_hours = models.IntegerField(choices=WORKING_HOURS)
     description = models.CharField(max_length=512, null=True)
 
     # def get_absolute_url(self):
@@ -74,6 +84,12 @@ class Terms(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_delete_url(self):
+        return reverse('delete_terms', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('update_terms', args=(self.pk,))
 
 
 class CrewMember(models.Model):
@@ -85,6 +101,12 @@ class CrewMember(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse('detail_crew_member_view', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('update_crew_member', args=(self.pk,))
+
+    def get_delete_url(self):
+        return reverse('delete_crew_member', args=(self.pk,))
 
     def __str__(self):
         return f"{self.name} {self.surname}"
@@ -110,6 +132,9 @@ class ShootingDay(models.Model):
 
     def get_update_url(self):
         return reverse('update_shootingday_view', args=(self.pk,))
+
+    def get_absolute_url(self):
+        return reverse('shootingday_detail_view', args=(self.pk,))
 
     def __str__(self):
         return f"{self.date} - {self.name}"
