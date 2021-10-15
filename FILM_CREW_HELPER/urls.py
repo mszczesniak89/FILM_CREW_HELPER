@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from work_logger.views import IndexView, MainPageView, SubProjectsView, CreateProjectView, CreateSubProjectView, \
-    ProjectCreateViewBS, DeleteProjectView, DeleteSubProjectView, TermsCreateViewBS, CrewMemberCreateViewBS
+    ProjectCreateViewBS, DeleteProjectView, DeleteSubProjectView, TermsCreateViewBS, CrewMemberCreateViewBS, \
+    ShootingDaysView, CreateShootingDayView, UpdateProjectView, UpdateSubProjectView, TermsCreateView, \
+    DeleteShootingDayView, UpdateShootingDayView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,10 +28,18 @@ urlpatterns = [
     path('main/', MainPageView.as_view(), name='main-page'),
     path('subprojects/<int:pk>/', SubProjectsView.as_view(), name='subprojects-view'),
     path('create_project/', CreateProjectView.as_view(), name='create-project-view'),
-    path('create_subproject/', CreateSubProjectView.as_view(), name='create-subproject-view'),
+    path('create_subproject/<int:pk>/', CreateSubProjectView.as_view(), name='create-subproject-view'),
     path('create_project_bs/', ProjectCreateViewBS.as_view(), name='create_project_bs'),
     path('delete_project/<int:pk>/', DeleteProjectView.as_view(), name='delete_project_view'),
+    path('update_project/<int:pk>/', UpdateProjectView.as_view(), name='update_project_view'),
     path('delete_subproject/<int:pk>/', DeleteSubProjectView.as_view(), name='delete_subproject_view'),
+    path('update_subproject/<int:pk>/', UpdateSubProjectView.as_view(), name='update_subproject_view'),
     path('create_terms_bs/', TermsCreateViewBS.as_view(), name='create_terms_bs'),
+    path('create_terms/<int:pk>/', TermsCreateView.as_view(), name='create_terms'),
     path('create_crew_member_bs/', CrewMemberCreateViewBS.as_view(), name='create_crew_member_bs'),
+    path('shooting_days/<int:pk>/', ShootingDaysView.as_view(), name='shooting-days-view'),
+    path('create_shootingday/<int:pk>/', CreateShootingDayView.as_view(), name='create-shootingday-view'),
+    path('delete_shootingday/<int:pk>/', DeleteShootingDayView.as_view(), name='delete_shootingday_view'),
+    path('update_shootingday/<int:pk>/', UpdateShootingDayView.as_view(), name='update_shootingday_view'),
+
 ]

@@ -37,7 +37,9 @@
         <tr>
             <td><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4 style="color:#424242; font-family:'Quicksand';">{{item.name}}</h4></a></td>
             <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.description }}</h5></td>
-            <td><a class="nav-item nav-link" href="{{ item.get_delete_url }}"><h5 style="color:#424242; font-family:'Quicksand';">DELETE</h5></a></td>
+            <td><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6 style="color:#424242; font-family:'Quicksand';">UPDATE</h6></a>
+            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DELETE</h6></a>
+            </td>
         </tr>
         {% endfor %}
 

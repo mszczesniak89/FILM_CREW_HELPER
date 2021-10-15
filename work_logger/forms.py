@@ -1,3 +1,5 @@
+from bootstrap_modal_forms.mixins import CreateUpdateAjaxMixin
+from braces.forms import UserKwargModelFormMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
@@ -5,13 +7,13 @@ from accounts.models import CustomUser
 from django import forms
 from django.forms import TextInput, widgets, modelformset_factory
 from bootstrap_modal_forms.forms import BSModalModelForm
-from work_logger.models import Project, SubProject, Terms, CrewMember, PAY_PERIODS
+from work_logger.models import Project, SubProject, Terms, CrewMember, PAY_PERIODS, ShootingDay
 
 
 class ProjectCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Project name...'}))
-    description = forms.CharField(max_length=512, widget=forms.Textarea(
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description'}))
 
     class Meta:
@@ -30,7 +32,7 @@ class SubProjectCreateForm(forms.ModelForm):
                                    widget=forms.Select(attrs={'style': 'width:255px'}))
     crew_members = forms.ModelMultipleChoiceField(required=False, label="Crew Members", queryset=CrewMember.objects.all(),
                                                   widget=forms.SelectMultiple(attrs={'style': 'width:255px'}))
-    description = forms.CharField(max_length=512, widget=forms.Textarea(
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 4, 'cols': 10}))
 
     class Meta:
@@ -44,21 +46,54 @@ class SubProjectCreateForm(forms.ModelForm):
         self.fields['crew_members'].queryset = CrewMember.objects.filter(user=user)
 
 
-class ProjectCreateFormBS(BSModalModelForm):
+class ProjectCreateFormBS(UserKwargModelFormMixin, BSModalModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Project name...'}))
-    description = forms.CharField(max_length=512, widget=forms.Textarea(
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...'}))
 
     class Meta:
         model = Project
         exclude = ['user']
 
+    # def __init__(self, *args, **kwargs):
+    #     super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
+    # #
+    # def __init__(self, *args, **kwargs):
+    #     self.user = kwargs['initial']['user']
+    #     super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
+
+    # def save(self, commit=True):
+    #     obj = super(ProjectCreateFormBS, self).save(False)
+    #     obj.user = self.user
+    #     commit and obj.save()
+    #     return obj
+
+
+class TermsCreateForm(forms.ModelForm):
+    name = forms.CharField(max_length=128, widget=forms.TextInput(
+        attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
+        attrs={'class': 'form-control', 'placeholder': 'Description...'}))
+    pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
+    base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
+                                                                   'placeholder': 'Base rate...'}))
+    ot_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
+                                                                   'placeholder': 'Overtime rate...'}))
+    camera_ot_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
+                                                                   'placeholder': 'Camera overtime rate...'}))
+    extras = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
+                                                                        'placeholder': 'Extra charges...'}))
+
+    class Meta:
+        model = Terms
+        exclude = ['user']
+
 
 class TermsCreateFormBS(BSModalModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
-    description = forms.CharField(max_length=512, widget=forms.Textarea(
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...'}))
     pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
@@ -82,13 +117,43 @@ class CrewMemberCreateFormBS(BSModalModelForm):
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Surname...'}))
     position = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Position...'}))
-    contact_info = forms.CharField(max_length=512, widget=forms.Textarea(
+    contact_info = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Contact info...'}))
 
     class Meta:
         model = CrewMember
         exclude = ['user']
 
+
+class ShootingDayCreateForm(forms.ModelForm):
+    subproject = forms.ModelChoiceField(queryset=SubProject.objects.all(), empty_label="Select sub-project",
+                                    widget=forms.Select(attrs={'style': 'width:300px'}))
+    name = forms.CharField(max_length=128, widget=forms.TextInput(
+        attrs={'size': '10', 'class': 'form-control', 'placeholder': 'Shooting day name...(i.e. SD01)'}))
+    date = forms.DateTimeField(label="Date:", widget=forms.DateInput(attrs={'type': 'date',
+                                                                                        'style': 'width:300px'}))
+    description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
+        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 4, 'cols': 10}))
+    start_hour = forms.DateTimeField(label="Start hour:", widget=forms.DateTimeInput(attrs={'id': "start_hour", 'type': 'datetime-local',
+                                                                                        'style': 'width:300px'}))
+    end_hour = forms.DateTimeField(label="End hour:", widget=forms.TimeInput(attrs={'id': "end_hour", 'type': 'datetime-local',
+                                                                                        'style': 'width:300px'}))
+    extras = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
+                                                                 'placeholder': 'Extra charges...'}))
+    ot = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                                 'placeholder': 'O/T...', }))
+    camera_ot = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                            'placeholder': 'Camera O/T...', 'style': 'width:10px'}))
+    toc = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                            'placeholder': 'TOC...', 'style': 'width:10px'}))
+
+    class Meta:
+        model = ShootingDay
+        fields = '__all__'
+
+    def __init__(self, user, *args, **kwargs):
+        super(ShootingDayCreateForm, self).__init__(*args, **kwargs)
+        self.fields['subproject'].queryset = SubProject.objects.filter(parent__user=user)
 
 
 

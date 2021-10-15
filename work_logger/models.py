@@ -15,6 +15,9 @@ class Project(models.Model):
     def get_delete_url(self):
         return reverse('delete_project_view', args=(self.pk, ))
 
+    def get_update_url(self):
+        return reverse('update_project_view', args=(self.pk,))
+
     def __str__(self):
         return self.name
 
@@ -27,11 +30,14 @@ class SubProject(models.Model):
     crew_members = models.ManyToManyField('CrewMember')
     description = models.CharField(max_length=512, null=True)
 
-    # def get_absolute_url(self):
-    #     return reverse('detail_subproject_view', args=(self.pk, ))
+    def get_absolute_url(self):
+        return reverse('shooting-days-view', args=(self.pk, ))
 
     def get_delete_url(self):
         return reverse('delete_subproject_view', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('update_subproject_view', args=(self.pk,))
 
     def __str__(self):
         return self.name
@@ -98,6 +104,12 @@ class ShootingDay(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse('detail_shooting_day_view', args=(self.pk,))
+
+    def get_delete_url(self):
+        return reverse('delete_shootingday_view', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('update_shootingday_view', args=(self.pk,))
 
     def __str__(self):
         return f"{self.date} - {self.name}"

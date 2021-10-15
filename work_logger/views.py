@@ -1,16 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from braces.views import UserFormKwargsMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.http import request, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, ListView, DeleteView
+from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from accounts.models import CustomUser
 from accounts.forms import CustomUserCreationForm
-from work_logger.models import Project, SubProject
-from work_logger.filters import ProjectFilter, SubProjectFilter
+from work_logger.models import Project, SubProject, ShootingDay
+from work_logger.filters import ProjectFilter, SubProjectFilter, ShootingDayFilter
 from work_logger.forms import ProjectCreateForm, SubProjectCreateForm, ProjectCreateFormBS, TermsCreateFormBS, \
-    CrewMemberCreateFormBS
+    CrewMemberCreateFormBS, ShootingDayCreateForm, TermsCreateForm
 from django_filters.views import FilterView
 from bootstrap_modal_forms.generic import BSModalCreateView
 
@@ -40,6 +41,12 @@ class SubProjectsView(LoginRequiredMixin, FilterView):
     filterset_class = SubProjectFilter
     template_name = 'work_logger/subprojects.html'
 
+    # def get_test_func(self):
+    #     if Project.objects.get(id=self.kwargs['pk']).user == self.request.user:
+    #         return False
+    #     else:
+    #         return True
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(id=self.kwargs['pk'])
@@ -61,34 +68,70 @@ class CreateSubProjectView(LoginRequiredMixin, CreateView):
     model = SubProject
     form_class = SubProjectCreateForm
     template_name = 'work_logger/create_subproject.html'
-    # success_url = reverse_lazy('subprojects-view')
 
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super(CreateSubProjectView, self).get_form_kwargs(*args, **kwargs)
         form_kwargs['user'] = self.request.user
         return form_kwargs
 
+    def get_initial(self):
+        parent = Project.objects.get(id=self.kwargs['pk'])
+        return {
+            'parent': parent,
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
     def get_success_url(self):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
-class ProjectCreateViewBS(BSModalCreateView):
+class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
     template_name = 'work_logger/create_project_bs.html'
     form_class = ProjectCreateFormBS
     success_message = 'Success: Project was created.'
-    success_url = reverse_lazy('create-subproject-view')
+    # success_url = reverse_lazy('main-page')
+
+    # def get_initial(self):
+    #     self.initial.update({'user': self.request.user})
+    #     return self.initial
 
     def form_valid(self, form):
-        user = self.request.user
+        # if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
         f = form.save(commit=False)
-        f.user = user
+        f.user = self.request.user
+        f.save()
         return super().form_valid(form)
+
+    # def get_form_kwargs(self, *args, **kwargs):
+    #     form_kwargs = super(ProjectCreateViewBS, self).get_form_kwargs(*args, **kwargs)
+    #     form_kwargs['user'] = self.request.user
+    #     return form_kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
 
 
 class DeleteProjectView(DeleteView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
+
+
+class UpdateProjectView(UpdateView):
+    model = Project
+    success_url = reverse_lazy('main-page')
+    template_name = 'work_logger/update_form.html'
+    # fields = '__all__'
+    form_class = ProjectCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "PROJECT"
+        return context
 
 
 class DeleteSubProjectView(DeleteView):
@@ -99,11 +142,53 @@ class DeleteSubProjectView(DeleteView):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
+class UpdateSubProjectView(UpdateView):
+    model = SubProject
+    template_name = 'work_logger/update_form.html'
+    # fields = '__all__'
+    form_class = SubProjectCreateForm
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super(UpdateSubProjectView, self).get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "SUB-PROJECT"
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
+
+
+class TermsCreateView(CreateView):
+    template_name = 'work_logger/create_terms.html'
+    form_class = TermsCreateForm
+    success_message = 'Success: Terms were created.'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.subproject.parent.pk})
+
+    def form_valid(self, form):
+        user = self.request.user
+        f = form.save(commit=False)
+        f.user = user
+        return super().form_valid(form)
+
+
 class TermsCreateViewBS(BSModalCreateView):
     template_name = 'work_logger/create_terms_bs.html'
     form_class = TermsCreateFormBS
     success_message = 'Success: Terms were created.'
-    success_url = reverse_lazy('create-subproject-view')
+
+    def get_success_url(self):
+        return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         user = self.request.user
@@ -116,11 +201,82 @@ class CrewMemberCreateViewBS(BSModalCreateView):
     template_name = 'work_logger/create_crew_member_bs.html'
     form_class = CrewMemberCreateFormBS
     success_message = 'Success: Crew member was created.'
-    success_url = reverse_lazy('create-subproject-view')
 
     def form_valid(self, form):
         user = self.request.user
         f = form.save(commit=False)
         f.user = user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
+
+
+class ShootingDaysView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        return ShootingDay.objects.filter(subproject=self.kwargs['pk'])
+    model = ShootingDay
+    context_object_name = 'object_list'
+    filterset_class = ShootingDayFilter
+    template_name = 'work_logger/shooting_days.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subproject'] = SubProject.objects.get(id=self.kwargs['pk'])
+        return context
+
+
+class CreateShootingDayView(LoginRequiredMixin, CreateView):
+    model = ShootingDay
+    form_class = ShootingDayCreateForm
+    template_name = 'work_logger/create_shootingday.html'
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super(CreateShootingDayView, self).get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
+    def get_initial(self):
+        subproject = SubProject.objects.get(id=self.kwargs['pk'])
+        return {
+            'subproject': subproject,
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subproject'] = SubProject.objects.get(id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
+
+
+class DeleteShootingDayView(DeleteView):
+    model = ShootingDay
+    template_name = 'work_logger/delete_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
+
+
+class UpdateShootingDayView(UpdateView):
+    model = ShootingDay
+    template_name = 'work_logger/update_form.html'
+    # fields = '__all__'
+    form_class = ShootingDayCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "SHOOTING DAY"
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.subproject.pk})
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super(UpdateShootingDayView, self).get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
+
 
