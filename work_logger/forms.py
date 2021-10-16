@@ -56,9 +56,9 @@ class ProjectCreateFormBS(UserKwargModelFormMixin, BSModalModelForm):
         model = Project
         exclude = ['user']
 
-    # def __init__(self, *args, **kwargs):
-    #     super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
-    # #
+    def __init__(self, *args, **kwargs):
+        super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
+    #
     # def __init__(self, *args, **kwargs):
     #     self.user = kwargs['initial']['user']
     #     super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
@@ -97,6 +97,7 @@ class TermsCreateFormBS(BSModalModelForm):
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...'}))
     pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
+    working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select(attrs={'style': 'width:420px'}))
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
                                                                    'placeholder': 'Base rate...'}))
     ot_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',

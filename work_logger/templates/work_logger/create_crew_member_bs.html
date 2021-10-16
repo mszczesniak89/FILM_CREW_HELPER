@@ -43,6 +43,9 @@
                             <div class="d-flex justify-content-center mt-3 login_container">
                             <input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit" value="SUBMIT">
                             </div>
+                            <div style="display:none">
+                                <label for="refURL"></label><input type="text" name="URL" id="refURL" value=""/>
+                            </div>
                             </form>
 
 
@@ -58,7 +61,13 @@
                     </div>
                             </div>
 </div>
-
+ <script type="text/javascript">
+     let refURL=document.URL;
+     let target=document.querySelector("#refURL");
+     target.value=refURL
+     console.log("yup that works")
+     console.log(refURL)
+ </script>
 {#<form method="post" action="">#}
 {#  {% csrf_token %}#}
 {##}

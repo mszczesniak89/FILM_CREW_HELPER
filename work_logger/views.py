@@ -57,40 +57,6 @@ class MainPageView(LoginRequiredMixin, FilterView):
     template_name = 'work_logger/main.html'
 
 
-class TermsView(LoginRequiredMixin, FilterView):
-    def get_queryset(self):
-        return Terms.objects.filter(user=self.request.user)
-    model = Terms
-    context_object_name = 'object_list'
-    filterset_class = TermsFilter
-    template_name = 'work_logger/terms.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['project'] = Project.objects.get(id=self.kwargs['pk'])
-        return context
-
-
-class SubProjectsView(LoginRequiredMixin, FilterView):
-    def get_queryset(self):
-        return SubProject.objects.filter(parent=self.kwargs['pk'])
-    model = SubProject
-    context_object_name = 'object_list'
-    filterset_class = SubProjectFilter
-    template_name = 'work_logger/subprojects.html'
-
-    # def get_test_func(self):
-    #     if Project.objects.get(id=self.kwargs['pk']).user == self.request.user:
-    #         return False
-    #     else:
-    #         return True
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['project'] = Project.objects.get(id=self.kwargs['pk'])
-        return context
-
-
 class CreateProjectView(LoginRequiredMixin, CreateView):
     model = Project
     form_class = ProjectCreateForm
@@ -100,31 +66,6 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
-
-class CreateSubProjectView(LoginRequiredMixin, CreateView):
-    model = SubProject
-    form_class = SubProjectCreateForm
-    template_name = 'work_logger/create_subproject.html'
-
-    def get_form_kwargs(self, *args, **kwargs):
-        form_kwargs = super(CreateSubProjectView, self).get_form_kwargs(*args, **kwargs)
-        form_kwargs['user'] = self.request.user
-        return form_kwargs
-
-    def get_initial(self):
-        parent = Project.objects.get(id=self.kwargs['pk'])
-        return {
-            'parent': parent,
-        }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['project'] = Project.objects.get(id=self.kwargs['pk'])
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
 class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
@@ -138,11 +79,12 @@ class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
     #     return self.initial
 
     def form_valid(self, form):
-        # if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        f = form.save(commit=False)
-        f.user = self.request.user
-        f.save()
-        return super().form_valid(form)
+        if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            form.instance.user = self.request.user
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+
 
     # def get_form_kwargs(self, *args, **kwargs):
     #     form_kwargs = super(ProjectCreateViewBS, self).get_form_kwargs(*args, **kwargs)
@@ -172,6 +114,51 @@ class UpdateProjectView(UpdateView):
         return context
 
 
+class SubProjectsView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        return SubProject.objects.filter(parent=self.kwargs['pk'])
+    model = SubProject
+    context_object_name = 'object_list'
+    filterset_class = SubProjectFilter
+    template_name = 'work_logger/subprojects.html'
+
+    # def get_test_func(self):
+    #     if Project.objects.get(id=self.kwargs['pk']).user == self.request.user:
+    #         return False
+    #     else:
+    #         return True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+
+class CreateSubProjectView(LoginRequiredMixin, CreateView):
+    model = SubProject
+    form_class = SubProjectCreateForm
+    template_name = 'work_logger/create_subproject.html'
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super(CreateSubProjectView, self).get_form_kwargs(*args, **kwargs)
+        form_kwargs['user'] = self.request.user
+        return form_kwargs
+
+    def get_initial(self):
+        parent = Project.objects.get(id=self.kwargs['pk'])
+        return {
+            'parent': parent,
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
+
+
 class DeleteSubProjectView(DeleteView):
     model = SubProject
     template_name = 'work_logger/delete_form.html'
@@ -198,56 +185,6 @@ class UpdateSubProjectView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
-
-
-class TermsCreateView(CreateView):
-    template_name = 'work_logger/create_terms.html'
-    form_class = TermsCreateForm
-    success_message = 'Success: Terms were created.'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['project'] = Project.objects.get(id=self.kwargs['pk'])
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.subproject.parent.pk})
-
-    def form_valid(self, form):
-        user = self.request.user
-        f = form.save(commit=False)
-        f.user = user
-        return super().form_valid(form)
-
-
-class TermsCreateViewBS(BSModalCreateView):
-    template_name = 'work_logger/create_terms_bs.html'
-    form_class = TermsCreateFormBS
-    success_message = 'Success: Terms were created.'
-
-    def get_success_url(self):
-        return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        user = self.request.user
-        f = form.save(commit=False)
-        f.user = user
-        return super().form_valid(form)
-
-
-class CrewMemberCreateViewBS(BSModalCreateView):
-    template_name = 'work_logger/create_crew_member_bs.html'
-    form_class = CrewMemberCreateFormBS
-    success_message = 'Success: Crew member was created.'
-
-    def form_valid(self, form):
-        user = self.request.user
-        f = form.save(commit=False)
-        f.user = user
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
 
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
@@ -327,6 +264,59 @@ class ShootingDayDetailView(DetailView):
         return context
 
 
+class TermsCreateView(CreateView):
+    template_name = 'work_logger/create_terms.html'
+    form_class = TermsCreateForm
+    success_message = 'Success: Terms were created.'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.subproject.parent.pk})
+
+    def form_valid(self, form):
+        user = self.request.user
+        f = form.save(commit=False)
+        f.user = user
+        return super().form_valid(form)
+
+
+class TermsCreateViewBS(BSModalCreateView):
+    template_name = 'work_logger/create_terms_bs.html'
+    form_class = TermsCreateFormBS
+    success_message = 'Success: Terms were created.'
+    success_url = reverse_lazy('main-page')
+
+    # def get_success_url(self):
+    #     return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            form.instance.user = self.request.user
+            url = self.request.POST.get('URL')
+            super().form_valid(form)
+            return HttpResponseRedirect(url)
+        else:
+            return super().form_invalid(form)
+
+
+class TermsView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        return Terms.objects.filter(user=self.request.user)
+    model = Terms
+    context_object_name = 'object_list'
+    filterset_class = TermsFilter
+    template_name = 'work_logger/terms.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(id=self.kwargs['pk'])
+        return context
+
+
 class DeleteTermsView(DeleteView):
     model = Terms
     success_url = reverse_lazy('main-page')
@@ -379,6 +369,34 @@ class CrewMemberCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('crew-members-view', kwargs={'pk': self.kwargs['pk']})
+
+
+class CrewMemberCreateViewBS(BSModalCreateView):
+    template_name = 'work_logger/create_crew_member_bs.html'
+    form_class = CrewMemberCreateFormBS
+    success_message = 'Success: Crew member was created.'
+    success_url = reverse_lazy('main-page')
+
+    # def form_valid(self, form):
+    #     user = self.request.user
+    #     f = form.save(commit=False)
+    #     f.user = user
+    #     return super().form_valid(form)
+    def form_valid(self, form):
+        if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            form.instance.user = self.request.user
+            url = self.request.POST.get('URL')
+            super().form_valid(form)
+            return HttpResponseRedirect(url)
+        else:
+            return super().form_invalid(form)
+
+    # def get_success_url(self):
+    #     url = self.request.POST.get('URL')
+    #     return HttpResponseRedirect(url)
+
+    #     # return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
+    #     return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
 
 class UpdateCrewMemberView(LoginRequiredMixin, UpdateView):
