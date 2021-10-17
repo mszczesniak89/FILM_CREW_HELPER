@@ -95,13 +95,13 @@ class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
         return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
 
 
-class DeleteProjectView(DeleteView):
+class DeleteProjectView(LoginRequiredMixin, DeleteView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
 
-class UpdateProjectView(UpdateView):
+class UpdateProjectView(LoginRequiredMixin, UpdateView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
@@ -159,7 +159,7 @@ class CreateSubProjectView(LoginRequiredMixin, CreateView):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
-class DeleteSubProjectView(DeleteView):
+class DeleteSubProjectView(LoginRequiredMixin, DeleteView):
     model = SubProject
     template_name = 'work_logger/delete_form.html'
 
@@ -167,7 +167,7 @@ class DeleteSubProjectView(DeleteView):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
-class UpdateSubProjectView(UpdateView):
+class UpdateSubProjectView(LoginRequiredMixin, UpdateView):
     model = SubProject
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
@@ -226,7 +226,7 @@ class CreateShootingDayView(LoginRequiredMixin, CreateView):
         return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
 
 
-class DeleteShootingDayView(DeleteView):
+class DeleteShootingDayView(LoginRequiredMixin, DeleteView):
     model = ShootingDay
     template_name = 'work_logger/delete_form.html'
 
@@ -234,7 +234,7 @@ class DeleteShootingDayView(DeleteView):
         return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
 
 
-class UpdateShootingDayView(UpdateView):
+class UpdateShootingDayView(LoginRequiredMixin, UpdateView):
     model = ShootingDay
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
@@ -254,7 +254,7 @@ class UpdateShootingDayView(UpdateView):
         return form_kwargs
 
 
-class ShootingDayDetailView(DetailView):
+class ShootingDayDetailView(LoginRequiredMixin, DetailView):
     model = ShootingDay
     template_name = 'work_logger/shootingday_details.html'
 
@@ -264,7 +264,7 @@ class ShootingDayDetailView(DetailView):
         return context
 
 
-class TermsCreateView(CreateView):
+class TermsCreateView(LoginRequiredMixin, CreateView):
     template_name = 'work_logger/create_terms.html'
     form_class = TermsCreateForm
     success_message = 'Success: Terms were created.'
@@ -275,7 +275,7 @@ class TermsCreateView(CreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('subprojects-view', kwargs={'pk': self.object.subproject.parent.pk})
+        return reverse_lazy('subprojects-view', kwargs={'pk': self.kwargs['pk']})
 
     def form_valid(self, form):
         user = self.request.user
@@ -317,13 +317,13 @@ class TermsView(LoginRequiredMixin, FilterView):
         return context
 
 
-class DeleteTermsView(DeleteView):
+class DeleteTermsView(LoginRequiredMixin, DeleteView):
     model = Terms
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
 
-class UpdateTermsView(UpdateView):
+class UpdateTermsView(LoginRequiredMixin, UpdateView):
     model = Terms
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'

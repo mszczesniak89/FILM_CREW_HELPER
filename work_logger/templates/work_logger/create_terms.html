@@ -140,8 +140,8 @@
 
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                            <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=project.id %}">
-                            <h6 style="color:#424242; font-family:'Quicksand';">BACK TO SUB-PROJECTS</h6>
+                            <a class="nav-item nav-link p-0" href="" id="refURL">
+                            <h6 style="color:#424242; font-family:'Quicksand';">BACK</h6>
                             </a>
                             </div>
                             {{form.errors}}
@@ -150,15 +150,16 @@
                             </div>
 
 
-
-
-
-
-
-
 			</div>
 		</div>
 	</div>
+ <script type="text/javascript">
+     let refURL=document.referrer;
+     let target=document.querySelector("#refURL");
+     target.href=refURL
+     console.log("yup that works")
+     console.log(refURL)
+ </script>
 
 
 
