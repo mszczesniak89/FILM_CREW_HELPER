@@ -534,17 +534,3 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             raise Http404("You are not authorized to access this page!")
-
-
-
-
-    def get_initial(self):
-        mealingredient = MealIngredient.objects.get(id=self.kwargs['pk'])
-        meal = mealingredient.meal
-        ingredient = mealingredient.ingredient
-
-        return {
-            'meal': meal,
-            'ingredient': ingredient,
-
-        }
