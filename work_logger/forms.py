@@ -158,7 +158,6 @@ class ShootingDayCreateForm(forms.ModelForm):
         self.fields['subproject'].queryset = SubProject.objects.filter(parent__user=user)
 
 
-
 class CrewMemberCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Name...'}))

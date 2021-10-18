@@ -538,4 +538,13 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 
+    def get_initial(self):
+        mealingredient = MealIngredient.objects.get(id=self.kwargs['pk'])
+        meal = mealingredient.meal
+        ingredient = mealingredient.ingredient
 
+        return {
+            'meal': meal,
+            'ingredient': ingredient,
+
+        }

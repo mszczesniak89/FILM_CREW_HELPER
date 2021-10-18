@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.shortcuts import render, redirect
 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserPasswordReset
 
 
 class Login(LoginView):
@@ -28,3 +29,16 @@ class SignUpView(CreateView):
         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], )
         login(self.request, user)
         return redirect(self.success_url)
+
+
+class PasswordReset(PasswordResetView):
+    form_class = CustomUserPasswordReset
+    template_name = 'registration/password_reset_form.html'
+
+
+class PasswordResetDone(PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+
+class PasswordResetConfirm(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
