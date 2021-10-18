@@ -10,8 +10,10 @@ faker = Faker("pl_PL")
 
 @pytest.fixture
 def user():
-    u = CustomUser.objects.create(username='testowy', id=1)
-    return u
+    lst = []
+    lst.append(CustomUser.objects.create(username='testowy', id=1))
+    lst.append(CustomUser.objects.create(username='testowy2', id=2))
+    return lst
 
 
 @pytest.fixture
@@ -19,7 +21,10 @@ def projects(user):
     lst = []
     for x in range(10):
         lst.append(Project.objects.create(name=faker.text(max_nb_chars=20), description=faker.text(max_nb_chars=20),
-                                          user=user))
+                                          user=user[0]))
+    for x in range(10):
+        lst.append(Project.objects.create(name=faker.text(max_nb_chars=20), description=faker.text(max_nb_chars=20),
+                                          user=user[1]))
     return lst
 
 
@@ -28,7 +33,11 @@ def terms(user):
     lst = []
     for x in range(5):
         lst.append(Terms.objects.create(name=faker.text(max_nb_chars=20), description=faker.text(max_nb_chars=20),
-                                        user=user, pay_period=1, base_rate=400, ot_rate=35,
+                                        user=user[0], pay_period=1, base_rate=400, ot_rate=35,
+                                        camera_ot_rate=50, extras=0, working_hours=1))
+    for x in range(5):
+        lst.append(Terms.objects.create(name=faker.text(max_nb_chars=20), description=faker.text(max_nb_chars=20),
+                                        user=user[1], pay_period=1, base_rate=400, ot_rate=35,
                                         camera_ot_rate=50, extras=0, working_hours=1))
     return lst
 
@@ -39,7 +48,11 @@ def crew_members(user):
     for x in range(5):
         lst.append(CrewMember.objects.create(name=faker.first_name(), surname=faker.last_name(),
                                              position=faker.text(max_nb_chars=20),
-                                             contact_info=faker.text(max_nb_chars=20), user=user))
+                                             contact_info=faker.text(max_nb_chars=20), user=user[0]))
+    for x in range(5):
+        lst.append(CrewMember.objects.create(name=faker.first_name(), surname=faker.last_name(),
+                                             position=faker.text(max_nb_chars=20),
+                                             contact_info=faker.text(max_nb_chars=20), user=user[1]))
     return lst
 
 
@@ -51,14 +64,17 @@ def subprojects(projects, terms, crew_members):
                                                description=faker.text(max_nb_chars=20),
                                                name=faker.text(max_nb_chars=20), position=faker.text(max_nb_chars=10),
                                                terms=terms[0])
-        subproject_diff_project = SubProject.objects.create(parent=Project.objects.get(id=projects[1].pk),
-                                                            description=faker.text(max_nb_chars=20),
-                                                            name=faker.text(max_nb_chars=20),
-                                                            position=faker.text(max_nb_chars=20), terms=terms[0])
         crew_member = crew_members[0]
         subproject.crew_members.add(crew_member)
-        subproject_diff_project.crew_members.add(crew_member)
         lst.append(subproject)
+    for x in range(10):
+
+        subproject_diff_project = SubProject.objects.create(parent=Project.objects.get(id=projects[-1].pk),
+                                                            description=faker.text(max_nb_chars=20),
+                                                            name=faker.text(max_nb_chars=20),
+                                                            position=faker.text(max_nb_chars=20), terms=terms[-1])
+        crew_member = crew_members[-1]
+        subproject_diff_project.crew_members.add(crew_member)
         lst.append(subproject_diff_project)
     return lst
 
@@ -81,5 +97,5 @@ def shooting_days(user, subprojects):
                                               description=faker.text(max_nb_chars=20), start_hour=random_date,
                                               end_hour=end_hour_shift, ot=random.randint(0, 4),
                                               camera_ot=random.randint(0, 3), toc=0, extras=0,
-                                              subproject=subprojects[1]))
+                                              subproject=subprojects[-1]))
     return lst

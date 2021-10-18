@@ -1,7 +1,7 @@
 from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
-from django.http import request, HttpResponseRedirect
+from django.http import request, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
@@ -95,18 +95,36 @@ class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
         return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
 
 
-class DeleteProjectView(LoginRequiredMixin, DeleteView):
+class DeleteProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class UpdateProjectView(LoginRequiredMixin, UpdateView):
+
+class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
     form_class = ProjectCreateForm
+
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -159,15 +177,24 @@ class CreateSubProjectView(LoginRequiredMixin, CreateView):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
 
-class DeleteSubProjectView(LoginRequiredMixin, DeleteView):
+class DeleteSubProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = SubProject
     template_name = 'work_logger/delete_form.html'
 
     def get_success_url(self):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class UpdateSubProjectView(LoginRequiredMixin, UpdateView):
+
+class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = SubProject
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
@@ -185,6 +212,34 @@ class UpdateSubProjectView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('subprojects-view', kwargs={'pk': self.object.parent.pk})
+
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
+
+
+class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = SubProject
+    template_name = 'work_logger/subproject_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_type'] = "SUB-PROJECT"
+        return context
+
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
@@ -226,15 +281,24 @@ class CreateShootingDayView(LoginRequiredMixin, CreateView):
         return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
 
 
-class DeleteShootingDayView(LoginRequiredMixin, DeleteView):
+class DeleteShootingDayView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = ShootingDay
     template_name = 'work_logger/delete_form.html'
 
     def get_success_url(self):
         return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.subproject.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class UpdateShootingDayView(LoginRequiredMixin, UpdateView):
+
+class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ShootingDay
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
@@ -253,8 +317,17 @@ class UpdateShootingDayView(LoginRequiredMixin, UpdateView):
         form_kwargs['user'] = self.request.user
         return form_kwargs
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.subproject.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class ShootingDayDetailView(LoginRequiredMixin, DetailView):
+
+class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ShootingDay
     template_name = 'work_logger/shootingday_details.html'
 
@@ -262,6 +335,15 @@ class ShootingDayDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['item_type'] = "SHOOTING DAY"
         return context
+
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.subproject.parent.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
 
 class TermsCreateView(LoginRequiredMixin, CreateView):
@@ -317,13 +399,22 @@ class TermsView(LoginRequiredMixin, FilterView):
         return context
 
 
-class DeleteTermsView(LoginRequiredMixin, DeleteView):
+class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Terms
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class UpdateTermsView(LoginRequiredMixin, UpdateView):
+
+class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Terms
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
@@ -334,6 +425,15 @@ class UpdateTermsView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['item_type'] = "TERMS"
         return context
+
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
 
 class CrewMembersView(LoginRequiredMixin, FilterView):
@@ -399,7 +499,7 @@ class CrewMemberCreateViewBS(BSModalCreateView):
     #     return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
 
-class UpdateCrewMemberView(LoginRequiredMixin, UpdateView):
+class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CrewMember
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
@@ -411,20 +511,31 @@ class UpdateCrewMemberView(LoginRequiredMixin, UpdateView):
         context['item_type'] = "CREW MEMBER"
         return context
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class DeleteCrewMemberView(LoginRequiredMixin, DeleteView):
+
+class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CrewMember
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
+    def test_func(self):
+        logged_in_user = self.request.user
+        obj = self.get_object()
+        content_user = obj.user
+        if logged_in_user == content_user:
+            return True
+        else:
+            raise Http404("You are not authorized to access this page!")
 
-class SubProjectDetailView(LoginRequiredMixin, DetailView):
-    model = SubProject
-    template_name = 'work_logger/subproject_details.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['item_type'] = "SUB-PROJECT"
-        return context
+
 
 

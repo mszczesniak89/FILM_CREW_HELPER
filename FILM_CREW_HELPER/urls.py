@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+
 from work_logger.views import IndexView, MainPageView, SubProjectsView, CreateProjectView, CreateSubProjectView, \
     ProjectCreateViewBS, DeleteProjectView, DeleteSubProjectView, TermsCreateViewBS, CrewMemberCreateViewBS, \
     ShootingDaysView, CreateShootingDayView, UpdateProjectView, UpdateSubProjectView, TermsCreateView, \
     DeleteShootingDayView, UpdateShootingDayView, ShootingDayDetailView, AboutView, ContactView, TermsView, \
     DeleteTermsView, UpdateTermsView, CrewMembersView, CrewMemberCreateView, UpdateCrewMemberView, DeleteCrewMemberView, \
     SubProjectDetailView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
