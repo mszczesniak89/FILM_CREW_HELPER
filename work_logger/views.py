@@ -134,7 +134,7 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class SubProjectsView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
-        return SubProject.objects.filter(parent=self.kwargs['pk'])
+        return SubProject.objects.filter(parent__user=self.request.user).filter(parent=self.kwargs['pk'])
     model = SubProject
     context_object_name = 'object_list'
     filterset_class = SubProjectFilter
@@ -244,7 +244,8 @@ class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
-        return ShootingDay.objects.filter(subproject=self.kwargs['pk'])
+        user = self.request.user
+        return ShootingDay.objects.filter(subproject__parent__user=user).filter(subproject=self.kwargs['pk'])
     model = ShootingDay
     context_object_name = 'object_list'
     filterset_class = ShootingDayFilter

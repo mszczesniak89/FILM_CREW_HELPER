@@ -8,11 +8,12 @@ from work_logger.models import Project, SubProject, ShootingDay, Terms, CrewMemb
 from faker import Faker
 faker = Faker("pl_PL")
 
+
 @pytest.fixture
 def user():
     lst = []
-    lst.append(CustomUser.objects.create(username='testowy', id=1))
-    lst.append(CustomUser.objects.create(username='testowy2', id=2))
+    lst.append(CustomUser.objects.create(username='testowy', id=1, email=faker.email))
+    lst.append(CustomUser.objects.create(username='testowy2', id=2, email=faker.email))
     return lst
 
 

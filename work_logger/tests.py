@@ -47,6 +47,54 @@ def test_contact_view_post():
     assert response.status_code == 200
 
 
+def test_login_view_get():
+    client = Client()
+    response = client.get(reverse("login"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_login_view_post(user):
+    client = Client()
+    password = faker.password(length=12)
+    user[0].set_password(password)
+    user[0].save()
+    response = client.post(reverse("login"), {
+        'username': user[0].username,
+        'password': password
+    })
+    assert response.status_code == 302
+
+
+def test_register_view_get():
+    client = Client()
+    response = client.get(reverse("signup"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_register_view_post(user):
+    client = Client()
+    username = faker.word()
+    password = faker.password(length=12)
+    email = faker.email()
+    new_user_data = {
+        'username': username,
+        'password1': password,
+        'password2': password,
+        'email': email,
+    }
+
+    response = client.post(reverse("signup"), data=new_user_data)
+    assert response.status_code == 302
+
+
+def test_reset_password_view_get():
+    client = Client()
+    response = client.get(reverse("password_reset"))
+    assert response.status_code == 200
+
+
 @pytest.mark.django_db
 def test_main_page_view_get_not_logged_in():
     client = Client()
