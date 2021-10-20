@@ -254,6 +254,16 @@ class ShootingDaysView(LoginRequiredMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['subproject'] = SubProject.objects.get(id=self.kwargs['pk'])
+        if ShootingDay.objects.filter(subproject=self.kwargs['pk']).count() > 0:
+            context['stats_days'] = ShootingDay.objects.filter(subproject=self.kwargs['pk']).count()
+            stats_total_hours_worked = 0
+            for day in ShootingDay.objects.filter(subproject=self.kwargs['pk']):
+                diff = day.end_hour - day.start_hour
+                diff_in_hours = diff.total_seconds() / 3600
+                stats_total_hours_worked += diff_in_hours
+            context['stats_total_hours_worked'] = round(stats_total_hours_worked, 1)
+            context['stats_avr_hours_per_day'] = round(stats_total_hours_worked, 1) / ShootingDay.objects.filter(
+                subproject=self.kwargs['pk']).count()
         return context
 
 
@@ -535,3 +545,4 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             raise Http404("You are not authorized to access this page!")
+

@@ -26,12 +26,22 @@
     <table class="fl-table">
         <thead class="sticky-top">
         <tr>
-            <td class="bg-light" colspan="9" >
+            <td colspan="1" class="bg-light"> </td>
+            <td class="bg-light" colspan="6">
                 <h2 style="color:#424242; font-family:'Quicksand';">Project: {{ subproject.parent.name }} </h2>
                 <h3 style="color:#424242; font-family:'Quicksand';"> Sub-project name: {{ subproject.name }}</h3>
                 <a class="nav-item nav-link p-0" href="{{ subproject.parent.get_absolute_url }}">
                 <h6 style="color:#424242; font-family:'Quicksand';">BACK TO SUB-PROJECTS</h6>
                 </a>
+            </td>
+            <td class="bg-light" colspan="2">
+                <p class="text-start m-1" style="color:#424242; font-size: medium; font-family:'Quicksand'" ;>Shooting
+                    days: {{ stats_days }}
+                <p class="text-start m-1" style="color:#424242; font-size: medium; font-family:'Quicksand'" ;>Hours
+                    worked (total): {{ stats_total_hours_worked }}
+                <p class="text-start m-1" style="color:#424242; font-size: medium; font-family:'Quicksand'" ;>Hours per
+                    day
+                    (average): {{ stats_avr_hours_per_day }}
             </td>
         </tr>
         <tr>
