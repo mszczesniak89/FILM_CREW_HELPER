@@ -1,4 +1,7 @@
 import os
+
+from django.core import mail
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'FILM_CREW_HELPER.settings'
 from datetime import timedelta
 from django.urls import reverse
@@ -84,15 +87,41 @@ def test_register_view_post(user):
         'password2': password,
         'email': email,
     }
-
+    old_user_count = CustomUser.objects.all().count()
     response = client.post(reverse("signup"), data=new_user_data)
+    new_user_count = CustomUser.objects.all().count()
     assert response.status_code == 302
+    assert old_user_count + 1 == new_user_count
 
 
 def test_reset_password_view_get():
     client = Client()
     response = client.get(reverse("password_reset"))
     assert response.status_code == 200
+
+
+def test_reset_password_view_post():
+    client = Client()
+    response = client.get(reverse("password_reset"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_reset_password_view_post_correct_email_address(user, projects):
+    client = Client()
+    user_email = user[0].email
+    response = client.post(reverse("password_reset"), {'email': user_email})
+    assert response.status_code == 302
+    assert len(mail.outbox) == 1
+
+
+@pytest.mark.django_db
+def test_reset_password_view_post_wrong_email_address(user, projects):
+    client = Client()
+    user_email = faker.email()
+    response = client.post(reverse("password_reset"), {'email': user_email})
+    assert response.status_code == 302
+    assert len(mail.outbox) == 0
 
 
 @pytest.mark.django_db
@@ -151,6 +180,52 @@ def test_create_project_view_post_not_logged_in(user, projects):
     }
     old_projects_count = Project.objects.filter(user=user[0]).count()
     response = client.post(reverse("create-project-view"), data=project)
+    assert response.status_code == 302
+    new_projects_count = Project.objects.filter(user=user[0])
+    assert old_projects_count == new_projects_count.count()
+
+
+@pytest.mark.django_db
+def test_create_project_modal_view_get_logged_in(user):
+    client = Client()
+    client.force_login(user[0])
+    response = client.get(reverse("create_project_bs"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_create_project_modal_view_get_not_logged_in(user):
+    client = Client()
+    response = client.get(reverse("create_project_bs"))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_create_project_modal_view_post_logged_in(user, projects):
+    client = Client()
+    client.force_login(user[0])
+    project = {
+        'name': faker.text(max_nb_chars=20),
+        'description': faker.text(max_nb_chars=20),
+        'user': user
+    }
+    old_projects_count = Project.objects.filter(user=user[0]).count()
+    response = client.post(reverse("create_project_bs"), data=project)
+    assert response.status_code == 302
+    new_projects_count = Project.objects.filter(user=user[0])
+    assert old_projects_count + 1 == new_projects_count.count()
+
+
+@pytest.mark.django_db
+def test_create_project_modal_view_post_not_logged_in(user, projects):
+    client = Client()
+    project = {
+        'name': faker.text(max_nb_chars=20),
+        'description': faker.text(max_nb_chars=20),
+        'user': user
+    }
+    old_projects_count = Project.objects.filter(user=user[0]).count()
+    response = client.post(reverse("create_project_bs"), data=project)
     assert response.status_code == 302
     new_projects_count = Project.objects.filter(user=user[0])
     assert old_projects_count == new_projects_count.count()
@@ -855,6 +930,65 @@ def test_create_terms_view_post_not_logged_in(user, projects, terms, crew_member
 
 
 @pytest.mark.django_db
+def test_create_terms_modal_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    client.force_login(user[0])
+    response = client.get(reverse("create_terms_bs"))
+    assert response.status_code == 200
+    assert response.context.get('form')
+
+
+@pytest.mark.django_db
+def test_create_terms_modal_view_get_not_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    response = client.get(reverse("create_terms_bs"))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_create_terms_modal_view_post_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    client.force_login(user[0])
+    new_terms_data = {
+        'name': faker.text(max_nb_chars=20),
+        'description': faker.text(max_nb_chars=20),
+        'pay_period': 1,
+        'base_rate': 1500,
+        'ot_rate': 35,
+        'camera_ot_rate': 50,
+        'extras': 0,
+        'user': user[0],
+        'working_hours': 1,
+    }
+    old_terms_count = Terms.objects.all().count()
+    response = client.post(reverse("create_terms_bs"), data=new_terms_data)
+    assert response.status_code == 302
+    new_terms_count = Terms.objects.all()
+    assert old_terms_count + 1 == new_terms_count.count()
+
+
+@pytest.mark.django_db
+def test_create_terms_modal_view_post_not_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    new_terms_data = {
+        'name': faker.text(max_nb_chars=20),
+        'description': faker.text(max_nb_chars=20),
+        'pay_period': 1,
+        'base_rate': 1500,
+        'ot_rate': 35,
+        'camera_ot_rate': 50,
+        'extras': 0,
+        'user': user[0],
+        'working_hours': 1,
+    }
+    old_terms_count = Terms.objects.all().count()
+    response = client.post(reverse("create_terms_bs"), data=new_terms_data)
+    assert response.status_code == 302
+    new_terms_count = Terms.objects.all()
+    assert old_terms_count == new_terms_count.count()
+
+
+@pytest.mark.django_db
 def test_terms_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
     client = Client()
     client.force_login(user[0])
@@ -1066,6 +1200,21 @@ def test_crew_members_view_get_not_logged_in(user, projects, terms, crew_members
 
 
 @pytest.mark.django_db
+def test_create_crew_members_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    client.force_login(user[0])
+    response = client.get(reverse("create_crew_member", kwargs={'pk': projects[0].pk}))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_create_crew_members_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    response = client.get(reverse("create_crew_member", kwargs={'pk': projects[0].pk}))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
 def test_create_crew_members_view_post_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
     client = Client()
     client.force_login(user[0])
@@ -1098,6 +1247,57 @@ def test_create_crew_members_view_post_not_logged_in(user, projects, terms, crew
     assert response.status_code == 302
     new_crew_members_count = CrewMember.objects.all().count()
     assert old_crew_members_count == new_crew_members_count
+
+
+@pytest.mark.django_db
+def test_create_crew_members_modal_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    client.force_login(user[0])
+    response = client.get(reverse("create_crew_member_bs"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_create_crew_members_modal_view_get_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    response = client.get(reverse("create_crew_member_bs"))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_create_crew_members_modal_view_post_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    client.force_login(user[0])
+    new_crew_member_data = {
+        'name': faker.first_name(),
+        'surname': faker.last_name(),
+        'contact_info': faker.text(max_nb_chars=10),
+        'position': faker.text(max_nb_chars=10),
+        'user': user[0],
+    }
+    old_crew_members_count = CrewMember.objects.all().count()
+    response = client.post(reverse("create_crew_member_bs"), data=new_crew_member_data)
+    assert response.status_code == 302
+    new_crew_members_count = CrewMember.objects.all().count()
+    assert old_crew_members_count + 1 == new_crew_members_count
+
+
+@pytest.mark.django_db
+def test_create_crew_members_modal_view_post_not_logged_in(user, projects, terms, crew_members, subprojects, shooting_days):
+    client = Client()
+    new_crew_member_data = {
+        'name': faker.first_name(),
+        'surname': faker.last_name(),
+        'contact_info': faker.text(max_nb_chars=10),
+        'position': faker.text(max_nb_chars=10),
+        'user': user[0],
+    }
+    old_crew_members_count = CrewMember.objects.all().count()
+    response = client.post(reverse("create_crew_member_bs"), data=new_crew_member_data)
+    assert response.status_code == 302
+    new_crew_members_count = CrewMember.objects.all().count()
+    assert old_crew_members_count == new_crew_members_count
+
 
 
 @pytest.mark.django_db

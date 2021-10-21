@@ -1,3 +1,4 @@
+from braces.views import AnonymousRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
@@ -6,7 +7,7 @@ from django.shortcuts import render, redirect
 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-
+from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserPasswordReset
 
 
@@ -17,7 +18,7 @@ class Login(LoginView):
     template_name = 'registration/login.html'
 
 
-class SignUpView(CreateView):
+class SignUpView(AnonymousRequiredMixin, CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('main-page')
     template_name = 'registration/register.html'

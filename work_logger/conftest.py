@@ -12,8 +12,8 @@ faker = Faker("pl_PL")
 @pytest.fixture
 def user():
     lst = []
-    lst.append(CustomUser.objects.create(username='testowy', id=1, email=faker.email))
-    lst.append(CustomUser.objects.create(username='testowy2', id=2, email=faker.email))
+    lst.append(CustomUser.objects.create(username='testowy', id=1, email=faker.email()))
+    lst.append(CustomUser.objects.create(username='testowy2', id=2, email=faker.email()))
     return lst
 
 

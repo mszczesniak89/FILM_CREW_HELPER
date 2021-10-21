@@ -68,7 +68,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProjectCreateViewBS(UserFormKwargsMixin, BSModalCreateView):
+class ProjectCreateViewBS(LoginRequiredMixin, UserFormKwargsMixin, BSModalCreateView):
     template_name = 'work_logger/create_project_bs.html'
     form_class = ProjectCreateFormBS
     success_message = 'Success: Project was created.'
@@ -262,8 +262,8 @@ class ShootingDaysView(LoginRequiredMixin, FilterView):
                 diff_in_hours = diff.total_seconds() / 3600
                 stats_total_hours_worked += diff_in_hours
             context['stats_total_hours_worked'] = round(stats_total_hours_worked, 1)
-            context['stats_avr_hours_per_day'] = round(stats_total_hours_worked, 1) / ShootingDay.objects.filter(
-                subproject=self.kwargs['pk']).count()
+            context['stats_avr_hours_per_day'] = round(round(stats_total_hours_worked, 1) / ShootingDay.objects.filter(
+                subproject=self.kwargs['pk']).count(), 1)
         return context
 
 
@@ -377,7 +377,7 @@ class TermsCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TermsCreateViewBS(BSModalCreateView):
+class TermsCreateViewBS(LoginRequiredMixin, BSModalCreateView):
     template_name = 'work_logger/create_terms_bs.html'
     form_class = TermsCreateFormBS
     success_message = 'Success: Terms were created.'
@@ -482,7 +482,7 @@ class CrewMemberCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('crew-members-view', kwargs={'pk': self.kwargs['pk']})
 
 
-class CrewMemberCreateViewBS(BSModalCreateView):
+class CrewMemberCreateViewBS(LoginRequiredMixin, BSModalCreateView):
     template_name = 'work_logger/create_crew_member_bs.html'
     form_class = CrewMemberCreateFormBS
     success_message = 'Success: Crew member was created.'
