@@ -1,14 +1,15 @@
 from braces.views import AnonymousRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.shortcuts import render, redirect
 
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import CustomUser
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserPasswordReset
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserPasswordReset, CustomUserChangeForm
 
 
 class Login(LoginView):
@@ -30,6 +31,15 @@ class SignUpView(AnonymousRequiredMixin, CreateView):
         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], )
         login(self.request, user)
         return redirect(self.success_url)
+
+
+class EditUser(LoginRequiredMixin, UpdateView):
+    form_class = CustomUserChangeForm
+    success_url = reverse_lazy('main-page')
+    template_name = 'registration/edit_user.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class PasswordReset(PasswordResetView):

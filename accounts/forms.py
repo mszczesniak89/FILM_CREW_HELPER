@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
+    ReadOnlyPasswordHashField
 from .models import CustomUser
 
 
@@ -32,10 +33,11 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
+    password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
 
     class Meta:
         model = CustomUser
-        fields = ('username', )
+        fields = ('username', 'email', 'password')
 
 
 class CustomUserPasswordReset(PasswordResetForm):

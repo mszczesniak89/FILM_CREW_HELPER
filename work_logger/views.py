@@ -107,7 +107,8 @@ class DeleteProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            # raise Http404("You are not authorized to access this page!")
+            return False
 
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -124,7 +125,8 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -191,7 +193,8 @@ class DeleteSubProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
 
 class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -220,7 +223,8 @@ class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
 
 class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -239,8 +243,8 @@ class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
-
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
@@ -335,7 +339,8 @@ class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
 
 class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -354,7 +359,8 @@ class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
 
 class TermsCreateView(LoginRequiredMixin, CreateView):
@@ -412,7 +418,7 @@ class TermsView(LoginRequiredMixin, FilterView):
 
 class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Terms
-    success_url = reverse_lazy('main-page')
+    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
     def test_func(self):
@@ -422,7 +428,12 @@ class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
+
+    def get_success_url(self):
+        return reverse_lazy('terms-view',
+                            kwargs={'pk': Project.objects.filter(user=self.request.user).first().pk})
 
 
 class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -444,7 +455,11 @@ class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+
+    def get_success_url(self):
+        return reverse_lazy('terms-view',
+                            kwargs={'pk': Project.objects.filter(user=self.request.user).first().pk})
 
 
 class CrewMembersView(LoginRequiredMixin, FilterView):
@@ -512,7 +527,7 @@ class CrewMemberCreateViewBS(LoginRequiredMixin, BSModalCreateView):
 
 class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CrewMember
-    success_url = reverse_lazy('main-page')
+    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
     # fields = '__all__'
     form_class = CrewMemberCreateForm
@@ -529,12 +544,16 @@ class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+
+    def get_success_url(self):
+        return reverse_lazy('crew-members-view',
+                            kwargs={'pk': Project.objects.filter(user=self.request.user).first().pk})
 
 
 class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CrewMember
-    success_url = reverse_lazy('main-page')
+    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
     def test_func(self):
@@ -544,5 +563,9 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if logged_in_user == content_user:
             return True
         else:
-            raise Http404("You are not authorized to access this page!")
+            return False
+            # raise Http404("You are not authorized to access this page!")
 
+    def get_success_url(self):
+        return reverse_lazy('crew-members-view',
+                            kwargs={'pk': Project.objects.filter(user=self.request.user).first().pk})

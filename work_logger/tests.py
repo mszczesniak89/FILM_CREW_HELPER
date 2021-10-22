@@ -125,6 +125,73 @@ def test_reset_password_view_post_wrong_email_address(user, projects):
 
 
 @pytest.mark.django_db
+def test_edit_account_view_get_not_logged_in(user):
+    client = Client()
+    response = client.get(reverse("edit_user"))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_edit_account_view_get_logged_in(user):
+    client = Client()
+    client.force_login(user[0])
+    response = client.get(reverse("edit_user"))
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_edit_account_view_post_logged_in(user):
+    client = Client()
+    client.force_login(user[0])
+    user = user[0]
+    old_username = user.username
+    old_email = user.email
+    new_user_data = {
+        'username': faker.first_name(),
+        'email': faker.email(),
+    }
+    response = client.post(reverse("edit_user"), data=new_user_data)
+    user.refresh_from_db()
+    new_username = user.username
+    new_email = user.email
+    assert response.status_code == 302
+    assert old_username != new_username
+    assert old_email != new_email
+
+
+@pytest.mark.django_db
+def test_edit_account_view_post_not_logged_in(user):
+    client = Client()
+    user = user[0]
+    old_username = user.username
+    old_email = user.email
+    new_user_data = {
+        'username': faker.first_name(),
+        'email': faker.email(),
+    }
+    response = client.post(reverse("edit_user"), data=new_user_data)
+    user.refresh_from_db()
+    new_username = user.username
+    new_email = user.email
+    assert response.status_code == 302
+    assert old_username == new_username
+    assert old_email == new_email
+
+
+@pytest.mark.django_db
+def test_edit_account_view_post_not_logged_in(user):
+    client = Client()
+    new_user_data = {
+        'username': faker.first_name(),
+        'email': faker.email(),
+    }
+    response = client.post(reverse("edit_user"), data=new_user_data)
+    assert response.status_code == 302
+
+
+
+
+@pytest.mark.django_db
 def test_main_page_view_get_not_logged_in():
     client = Client()
     response = client.get(reverse("main-page"))
