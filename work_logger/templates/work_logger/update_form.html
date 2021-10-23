@@ -1,129 +1,52 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
 
-{# <form action="" method="get">#}
-{#    <div class="table-wrapper">#}
-{#    <table class="fl-table">#}
-{#        <thead>#}
-{##}
-{#                {% for field in form %}#}
-{#                <tr><td><h4 style="color:#424242; font-family:'Quicksand';">{{ field.label }} {{ field }}</h4></td></tr>#}
-{#                {% endfor %}#}
-{##}
-{##}
-{##}
-{#        </thead>#}
-{#    </table>#}
-{#    </div>#}
-{# </form>#}
 
-    	<style>
-		.user_card {
-			width: 550px;
-			margin-top: auto;
-			margin-bottom: auto;
-			background: lightgrey;
-			position: relative;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-			padding: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			border-radius: 5px;
-
-		}
-
-		.form_container {
-			margin-top: 20px;
-		}
-
-		#form-title{
-			color: #fff;
-
-		}
-
-		.login_btn {
-			width: 100%;
-			background: whitesmoke;
-		}
-		.login_btn:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
-		.login_container {
-			padding: 0 2rem;
-		}
-		.input-group-text {
-			background: #f7ba5b !important;
-			color: white !important;
-			border: 0 !important;
-			border-radius: 0.25rem 0 0 0.25rem !important;
-		}
-		.input_user,
-		.input_pass:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
-
-		#messages{
-			background-color: grey;
-			color: #fff;
-			padding: 10px;
-			margin-top: 10px;
-		}
-	</style>
-
-	<div class="container h-100">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-				<div class="d-flex justify-content-center">
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
 
 
-					<h3 id="form-title" style="color:#424242; font-family:'Quicksand';">UPDATE {{ item_type }}</h3>
-				</div>
-				<div class="d-flex justify-content-center form_container">
-					<form method="POST" action="">
-                         {% csrf_token %}
+                    <h3 id="form-title">UPDATE {{ item_type }}</h3>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form method="POST" action="">
+                        {% csrf_token %}
                         {% for field in form %}
-						<div class="input-group mb-2">
-							<div class="input-group-append">
+                            <div class="input-group mb-2">
+                                <div class="input-group-append">
 
-							</div>
+                                </div>
 
-                            {{ field }}
-						</div>
+                                {{ field }}
+                            </div>
                         {% endfor %}
 
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 				<input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit" value="SUBMIT">
-				   			</div>
-					</form>
-
-
-				</div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <input class="btn login_btn" style="color:#424242; font-family:'Quicksand';" type="submit"
+                                   value="SUBMIT">
+                        </div>
+                    </form>
+                </div>
                 <div class="d-flex justify-content-center mt-3">
                     {% if item_type == "PROJECT" or item_type == "TERMS" %}
-                 <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO PROJECTS</h6>
+                        <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
+                        <h6>BACK TO PROJECTS</h6>
                     {% elif item_type == "SUB-PROJECT" %}
-                <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=object.id %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO {{ item_type }}S</h6>
+                        <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=object.id %}">
+                        <h6>BACK TO {{ item_type }}S</h6>
                     {% elif item_type == "SHOOTING DAY" %}
-                <a class="nav-item nav-link p-0" href="{% url 'shooting-days-view' pk=object.id %}">
-                          <h6 style="color:#424242; font-family:'Quicksand';">BACK TO {{ item_type }}S</h6>
-                     {% endif %}
+                        <a class="nav-item nav-link p-0" href="{% url 'shooting-days-view' pk=object.id %}">
+                        <h6>BACK TO {{ item_type }}S</h6>
+                    {% endif %}
 
-                </a>
+                    </a>
                 </div>
-                {{form.errors}}
-
-
-
-			</div>
-		</div>
-	</div>
+                {{ form.errors }}
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}

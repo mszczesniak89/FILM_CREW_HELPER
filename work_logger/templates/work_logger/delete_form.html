@@ -1,21 +1,19 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
-        <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5" style="--bs-bg-opacity: .7;">
             <div class="card-body text-center">
-            <h3 class="card-text" style="color:#424242; font-family:'Quicksand';" >Are you sure you want to delete?</h3>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_table }}
-            <tr>
-                <td colspan="2"><p><input type="submit" value="YES!"></p></td>
-            </tr>
-        </form>
-    </div>
+                <h3 class="card-text">Are you sure you want to
+                    delete?</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_table }}
+                    <tr>
+                        <td colspan="2"><p><input type="submit" value="YES!"></p></td>
+                    </tr>
+                </form>
             </div>
         </div>
+    </div>
 
-{#    {% for message in messages %}#}
-{#        <p> {{message}}</p>#}
-{#    {% endfor %}#}
 {% endblock %}

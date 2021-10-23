@@ -1,106 +1,110 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
 
- <form action="" method="get">
-    <div class="table-wrapper">
-    <table class="fl-table">
-        <thead>
-            <tr>
-                <th><h5 style="color:#424242; font-family:'Quicksand';">SEARCH BY:</h5></th>
-                {% for field in filter.form %}
-                    <td ><h5 style="color:#424242; font-family:'Quicksand';">{{ field.label }} {{ field }}</h5></td>
-                {% endfor %}
-                    <td><button type="submit" class="btn btn-outline-secondary">Search</button></td>
-            </tr>
-            <tr>
-                <td colspan="5"><a class="nav-item nav-link p-0" href="{% url 'create-subproject-view' pk=project.id %}">
-                    <h5 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW SUB-PROJECT</h5></a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
+    <form action="" method="get">
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
+                <tr>
+                    <th><h5>SEARCH BY:</h5></th>
+                    {% for field in filter.form %}
+                        <td><h5>{{ field.label }} {{ field }}</h5></td>
+                    {% endfor %}
+                    <td>
+                        <button type="submit" class="btn btn-outline-secondary">Search</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5"><a class="nav-item nav-link p-0"
+                                       href="{% url 'create-subproject-view' pk=project.id %}">
+                        <h5 class="mb-0">ADD NEW SUB-PROJECT</h5></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
 
-                        <div class="mt-0 mb-0 d-flex justify-content-center"  style="color:#424242; font-family:'Quicksand';">
+                        <div class="mt-0 mb-0 d-flex justify-content-center">
                             <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
-                                <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW TERMS</h6>
+                                <h6 class="mb-0">ADD NEW TERMS</h6>
                             </a>
-                              <a class="nav-item nav-link" href="{% url 'terms-view' pk=project.id%}">
-                                  <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">VIEW TERMS</h6>
+                            <a class="nav-item nav-link" href="{% url 'terms-view' pk=project.id %}">
+                                <h6 class="mb-0">VIEW TERMS</h6>
                             </a>
-                              <a class="nav-item nav-link" href="{% url 'create_crew_member' pk=project.id %}">
-                                <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD CREW MEMBERS</h6>
+                            <a class="nav-item nav-link" href="{% url 'create_crew_member' pk=project.id %}">
+                                <h6 class="mb-0">ADD CREW MEMBERS</h6>
                             </a>
-                              <a class="nav-item nav-link" href="{% url 'crew-members-view' pk=project.id%}">
-                                  <h6 class="mb-0" style="color:#424242; font-family:'Quicksand';">VIEW CREW MEMBERS</h6>
+                            <a class="nav-item nav-link" href="{% url 'crew-members-view' pk=project.id %}">
+                                <h6 class="mb-0">VIEW CREW MEMBERS</h6>
                             </a>
-                            </div>
-                </td>
-            </tr>
+                        </div>
+                    </td>
+                </tr>
 
-        </thead>
-    </table>
-    </div>
- </form>
+                </thead>
+            </table>
+        </div>
+    </form>
 
-{% if object_list %}
-    <div class="table-wrapper" style="max-height: 420px; width: auto;overflow-x: hidden; overflow-y: auto">
-    <table class="fl-table">
-        <thead class="sticky-top">
-        <tr>
-            <td class="bg-light" colspan="4" >
-                <h2 style="color:#424242; font-family:'Quicksand';">Project name: {{ project.name }}</h2>
-                <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
-                <h6 style="color:#424242; font-family:'Quicksand';">BACK TO PROJECTS</h6>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <th><h2 style="color:#424242; font-family:'Quicksand';">Sub-project name:</h2></th>
-            <th><h2 style="color:white; font-family:'Quicksand';">Position:</h2></th>
-            <th><h2 style="color:#424242; font-family:'Quicksand';">Description:</h2></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in object_list %}
-        <tr>
-            <td><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4 style="color:#424242; font-family:'Quicksand';">{{item.name}}</h4></a></td>
-            <td><h4 style="color:#424242; font-family:'Quicksand';">{{item.position}}</h4></td>
-            <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.description }}</h5></td>
+    {% if object_list %}
+        <div class="table-wrapper" style="max-height: 420px; width: auto;overflow-x: hidden; overflow-y: auto">
+            <table class="fl-table">
+                <thead class="sticky-top">
+                <tr>
+                    <td class="bg-light" colspan="4">
+                        <h2>Project name: {{ project.name }}</h2>
+                        <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
+                            <h6>BACK TO PROJECTS</h6>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th><h2>Sub-project name:</h2></th>
+                    <th><h2 style="color:white;">Position:</h2></th>
+                    <th><h2>Description:</h2></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in object_list %}
+                    <tr>
+                        <td><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4>{{ item.name }}</h4></a>
+                        </td>
+                        <td><h4>{{ item.position }}</h4></td>
+                        <td><h5>{{ item.description }}</h5></td>
 
-            <td>
-                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_detail_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DETAILS</h6></a>
-                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6 style="color:#424242; font-family:'Quicksand';">UPDATE</h6></a>
-                <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DELETE</h6></a>
-            </td>
-        </tr>
-        {% endfor %}
+                        <td>
+                            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_detail_url }}"><h6>DETAILS</h6></a>
+                            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6>UPDATE</h6></a>
+                            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6>DELETE</h6></a>
+                        </td>
+                    </tr>
+                {% endfor %}
 
-        <tbody>
-    </table>
-</div>
-{% else %}
-    <div class="table-wrapper">
-    <table class="fl-table">
-    <thead>
-    <tr>
-        <td colspan="4" >
-            <h2 style="color:#424242; font-family:'Quicksand';">Project name: {{ project.name }}</h2>
-            <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
-            <h6 style="color:#424242; font-family:'Quicksand';">BACK TO PROJECTS</h6>
-            </a>
-        </td>
-    </tr>
-    </thead>
-    </table>
-    </div>
+                <tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
+                <tr>
+                    <td colspan="4">
+                        <h2>Project name: {{ project.name }}</h2>
+                        <a class="nav-item nav-link p-0" href="{% url 'main-page' %}">
+                            <h6>BACK TO PROJECTS</h6>
+                        </a>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
 
-    <div class="table-wrapper">
-    <div class="d-flex justify-content-center">
-    <h1 style="color:#424242; font-family:'Quicksand';">No sub-projects found!</h1>
-    </div>
-    </div>
-{% endif %}
+        <div class="table-wrapper">
+            <div class="d-flex justify-content-center">
+                <h1>No sub-projects found!</h1>
+            </div>
+        </div>
+    {% endif %}
 
 
 {% endblock %}

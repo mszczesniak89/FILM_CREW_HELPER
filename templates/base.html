@@ -9,7 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/style.css">
     <title>FILM CREW HELPER</title>
 
@@ -19,26 +20,34 @@
 
 <div class="navbar sticky-top navbar-light bg-light navbar-expand-lg justify-content-around">
     <div class="navbar-nav text-uppercase ">
-    <h1 style="color:#424242; font-family:'Quicksand'; font-size: 60px"><a class="nav-item nav-link" href="{% url 'index-view' %}" >Film Crew Helper</a></h1>
+        <h1 style="font-size: 60px">
+            <a class="nav-item nav-link" href="{% url 'index-view' %}">Film Crew Helper</a>
+        </h1>
     </div>
     <div class="navbar-nav text-uppercase ">
         <a class="nav-item nav-link active" href="#"> <span class="sr-only"></span></a>
-        <a class="nav-item nav-link" href="{% url 'index-view' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3">Home |</span></a>
-        <a class="nav-item nav-link" href="{% url 'about-page' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> About |</span></a>
-        <a class="nav-item nav-link" href="{% url 'contact-page' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Contact |</span></a>
+        <a class="nav-item nav-link" href="{% url 'index-view' %}"><span style="color:#424242; font-family:'Quicksand';"
+                                                                         class="mb-0 h3">Home |</span></a>
+        <a class="nav-item nav-link" href="{% url 'about-page' %}"><span style="color:#424242; font-family:'Quicksand';"
+                                                                         class="mb-0 h3"> About |</span></a>
+        <a class="nav-item nav-link" href="{% url 'contact-page' %}"><span
+                style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Contact |</span></a>
         {% if not user.is_authenticated %}
-        <a class="nav-item nav-link" href="{% url 'login' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Login </span></a>
+            <a class="nav-item nav-link" href="{% url 'login' %}"><span style="color:#424242; font-family:'Quicksand';"
+                                                                        class="mb-0 h3"> Login </span></a>
         {% else %}
-        <a class="nav-item nav-link" href="{% url 'edit_user' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> My Account |</span></a>
-        <a class="nav-item nav-link" href="{% url 'logout' %}"><span style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Logout</span></a>
+            <a class="nav-item nav-link" href="{% url 'edit_user' %}"><span
+                    style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> My Account |</span></a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}"><span style="color:#424242; font-family:'Quicksand';"
+                                                                         class="mb-0 h3"> Logout</span></a>
         {% endif %}
     </div>
 
 </div>
 
 <div
-    class="bg"
-    style="
+        class="bg"
+        style="
     background-image: url('/static/images/background.png');
     padding-top: 10.5rem;
     padding-bottom: 6rem;
@@ -49,66 +58,77 @@
     background-size: cover;
   "
 >
-{% block zawartosc %}
+    {% block zawartosc %}
 
 
-{% endblock %}
+    {% endblock %}
 
 </div>
- <footer class="footer bg-light py-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div style="color:#424242; font-family:'Quicksand';" class="col-lg-4 text-lg-start">Copyright &copy; Mateusz Szcześniak</div>
-                    <div class="col-lg-4 my-3 my-lg-0">
-                        <a class="btn btn-dark btn-social mx-2" href="https://www.imdb.com/name/nm4522975/"><i class="fab fa-imdb fa-2x"></i></a>
-                        <a class="btn btn-dark btn-social mx-2" href="https://www.linkedin.com/in/mateusz-szczesniak-743b8632/"><i class="fab fa-linkedin-in fa-2x"></i></a>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                        <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none" href="#!">Terms of Use</a>
-                    </div>
-                </div>
+<footer class="footer bg-light py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div style="color:#424242; font-family:'Quicksand';" class="col-lg-4 text-lg-start">Copyright &copy; Mateusz
+                Szcześniak
             </div>
-        </footer>
+            <div class="col-lg-4 my-3 my-lg-0">
+                <a class="btn btn-dark btn-social mx-2" href="https://www.imdb.com/name/nm4522975/"><i
+                        class="fab fa-imdb fa-2x"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="https://www.linkedin.com/in/mateusz-szczesniak-743b8632/"><i
+                        class="fab fa-linkedin-in fa-2x"></i></a>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none me-3"
+                   href="#!">Privacy Policy</a>
+                <a style="color:#424242; font-family:'Quicksand';" class="link-dark text-decoration-none" href="#!">Terms
+                    of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content rounded-3" ></div>
-  </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-3"></div>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
 <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function () {
 
-    $("#create-project").modalForm({
-        formURL: "{% url 'create_project_bs' %}"
+        $("#create-project").modalForm({
+            formURL: "{% url 'create_project_bs' %}"
+        });
+
     });
-
-});
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function () {
 
-    $("#create-terms").modalForm({
-        formURL: "{% url 'create_terms_bs' %}"
+        $("#create-terms").modalForm({
+            formURL: "{% url 'create_terms_bs' %}"
+        });
+
     });
-
-});
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function () {
 
-    $("#create-crew-member").modalForm({
-        formURL: "{% url 'create_crew_member_bs' %}",
-        modalID: "#modal"
+        $("#create-crew-member").modalForm({
+            formURL: "{% url 'create_crew_member_bs' %}",
+            modalID: "#modal"
+        });
+
     });
-
-});
 </script>
 <script src="/static/js/app.js" type="text/javascript"></script>
 

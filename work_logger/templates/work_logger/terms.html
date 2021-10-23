@@ -1,78 +1,81 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
 
- <form action="" method="get">
-    <div class="table-wrapper">
-    <table class="fl-table">
-        <thead>
-            <tr>
-                <th><h5 style="color:#424242; font-family:'Quicksand';">SEARCH BY:</h5></th>
-                {% for field in filter.form %}
-                    <td ><h5 style="color:#424242; font-family:'Quicksand';">{{ field.label }} {{ field }}</h5></td>
-                {% endfor %}
-                    <td><button type="submit" class="btn btn-outline-secondary" style="font-family:'Quicksand';">
-                        Search</button></td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                          <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
-                                <h5 class="mb-0" style="color:#424242; font-family:'Quicksand';">ADD NEW TERMS</h5>
-                            </a>
-              </td>
-            </tr>
-        </thead>
-    </table>
-    </div>
- </form>
-
-{% if object_list %}
-    <div class="table-wrapper" style="max-height: 420px; width: auto;overflow-x: hidden; overflow-y: auto">
-    <table class="fl-table">
-        <thead class="sticky-top">
+    <form action="" method="get">
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
                 <tr>
-            <td class="bg-light" colspan="5" >
-                <h2 style="color:#424242; font-family:'Quicksand';">Terms</h2>
-                <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=project.id %}">
-                <h6 style="color:#424242; font-family:'Quicksand';">BACK TO SUB-PROJECTS</h6>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <th><h2 style="color:#424242; font-family:'Quicksand';">Name:</h2></th>
-            <th><h2 style="color:white; font-family:'Quicksand';">Description:</h2></th>
-            <th><h2 style="color:white; font-family:'Quicksand';">Pay period:</h2></th>
-            <th><h2 style="color:white; font-family:'Quicksand';">Base rate:</h2></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in object_list %}
-        <tr>
-            <td><h4 style="color:#424242; font-family:'Quicksand';">{{item.name}}</h4></td>
-            <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.description }}</h5></td>
-            <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.get_pay_period_display }}</h5></td>
-            <td><h5 style="color:#424242; font-family:'Quicksand';">{{ item.base_rate }}</h5></td>
-            <td><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6 style="color:#424242; font-family:'Quicksand';">UPDATE</h6></a>
-            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6 style="color:#424242; font-family:'Quicksand';">DELETE</h6></a>
-            </td>
-        </tr>
-        {% endfor %}
-
-        <tbody>
-    </table>
-    </div>
-
-{% else %}
-    <div class="table-wrapper">
-    <div class="d-flex justify-content-center">
-    <h1 style="color:#424242; font-family:'Quicksand';">No terms found!</h1>
-    </div>
-        <div class="d-flex justify-content-center">
-        <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=project.id %}">
-                      <h6 style="color:#424242; font-family:'Quicksand';">BACK TO SUB-PROJECTS</h6></a>
+                    <th><h5>SEARCH BY:</h5></th>
+                    {% for field in filter.form %}
+                        <td><h5>{{ field.label }} {{ field }}</h5></td>
+                    {% endfor %}
+                    <td>
+                        <button type="submit" class="btn btn-outline-secondary" style="font-family:'Quicksand';">
+                            Search
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
+                            <h5 class="mb-0">ADD NEW TERMS</h5>
+                        </a>
+                    </td>
+                </tr>
+                </thead>
+            </table>
         </div>
-    </div>
-{% endif %}
+    </form>
+
+    {% if object_list %}
+        <div class="table-wrapper" style="max-height: 420px; width: auto;overflow-x: hidden; overflow-y: auto">
+            <table class="fl-table">
+                <thead class="sticky-top">
+                <tr>
+                    <td class="bg-light" colspan="5">
+                        <h2>Terms</h2>
+                        <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=project.id %}">
+                            <h6>BACK TO SUB-PROJECTS</h6>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th><h2>Name:</h2></th>
+                    <th><h2 style="color:white;">Description:</h2></th>
+                    <th><h2>Pay period:</h2></th>
+                    <th><h2 style="color:white;">Base rate:</h2></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in object_list %}
+                    <tr>
+                        <td><h4>{{ item.name }}</h4></td>
+                        <td><h5>{{ item.description }}</h5></td>
+                        <td><h5>{{ item.get_pay_period_display }}</h5></td>
+                        <td><h5>{{ item.base_rate }}</h5></td>
+                        <td><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6>UPDATE</h6></a>
+                            <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6>DELETE</h6></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                <tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <div class="table-wrapper">
+            <div class="d-flex justify-content-center">
+                <h1>No terms found!</h1>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a class="nav-item nav-link p-0" href="{% url 'subprojects-view' pk=project.id %}">
+                    <h6>BACK TO SUB-PROJECTS</h6></a>
+            </div>
+        </div>
+    {% endif %}
 
 
 {% endblock %}
