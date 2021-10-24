@@ -1,6 +1,7 @@
 asgiref==3.4.1
 attrs==21.2.0
 backports.zoneinfo==0.2.1
+dj-database-url==0.5.0
 Django==4.0a1
 -e git+https://github.com/mszczesniak89/django-bootstrap-modal-forms.git@6383f67f923e64b7c1581bd5cbe6cd7ee8a547f3#egg=django_bootstrap_modal_forms
 django-braces==1.14.0
