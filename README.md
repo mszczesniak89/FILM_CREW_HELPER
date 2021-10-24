@@ -11,4 +11,4 @@ Hate to spend time figuring out overtime and 'time off the clock', especially af
 No worries! We got you covered.
 Designed specifically for Film Crew members by (yes you guessed it) Film Crew members.
 
-**TRY IT OUT HERE: https://mszczesniak-film-crew-helper.herokuapp.com/
+**TRY IT OUT HERE: https://mszczesniak-film-crew-helper.herokuapp.com/**
