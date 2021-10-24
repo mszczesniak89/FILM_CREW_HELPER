@@ -1,0 +1,1 @@
+web: gunicorn FILM_CREW_HELPER.wsgi --log-file -

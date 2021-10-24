@@ -15,6 +15,7 @@ from work_logger.forms import ProjectCreateForm, SubProjectCreateForm, ProjectCr
 from django_filters.views import FilterView
 from bootstrap_modal_forms.generic import BSModalCreateView
 
+
 # Create your views here.
 
 
@@ -51,6 +52,7 @@ class ContactView(View):
 class MainPageView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return Project.objects.filter(user=self.request.user)
+
     model = Project
     context_object_name = 'object_list'
     filterset_class = ProjectFilter
@@ -72,6 +74,7 @@ class ProjectCreateViewBS(LoginRequiredMixin, UserFormKwargsMixin, BSModalCreate
     template_name = 'work_logger/create_project_bs.html'
     form_class = ProjectCreateFormBS
     success_message = 'Success: Project was created.'
+
     # success_url = reverse_lazy('main-page')
 
     # def get_initial(self):
@@ -84,7 +87,6 @@ class ProjectCreateViewBS(LoginRequiredMixin, UserFormKwargsMixin, BSModalCreate
             return super().form_valid(form)
         else:
             return super().form_invalid(form)
-
 
     # def get_form_kwargs(self, *args, **kwargs):
     #     form_kwargs = super(ProjectCreateViewBS, self).get_form_kwargs(*args, **kwargs)
@@ -137,6 +139,7 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class SubProjectsView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return SubProject.objects.filter(parent__user=self.request.user).filter(parent=self.kwargs['pk'])
+
     model = SubProject
     context_object_name = 'object_list'
     filterset_class = SubProjectFilter
@@ -246,10 +249,12 @@ class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
             return False
             # raise Http404("You are not authorized to access this page!")
 
+
 class ShootingDaysView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         user = self.request.user
         return ShootingDay.objects.filter(subproject__parent__user=user).filter(subproject=self.kwargs['pk'])
+
     model = ShootingDay
     context_object_name = 'object_list'
     filterset_class = ShootingDayFilter
@@ -340,7 +345,6 @@ class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
 
 class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -360,7 +364,6 @@ class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
 
 class TermsCreateView(LoginRequiredMixin, CreateView):
@@ -389,9 +392,6 @@ class TermsCreateViewBS(LoginRequiredMixin, BSModalCreateView):
     success_message = 'Success: Terms were created.'
     success_url = reverse_lazy('main-page')
 
-    # def get_success_url(self):
-    #     return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
-
     def form_valid(self, form):
         if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
             form.instance.user = self.request.user
@@ -405,6 +405,7 @@ class TermsCreateViewBS(LoginRequiredMixin, BSModalCreateView):
 class TermsView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return Terms.objects.filter(user=self.request.user)
+
     model = Terms
     context_object_name = 'object_list'
     filterset_class = TermsFilter
@@ -418,7 +419,6 @@ class TermsView(LoginRequiredMixin, FilterView):
 
 class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Terms
-    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
     def test_func(self):
@@ -429,7 +429,6 @@ class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
     def get_success_url(self):
         return reverse_lazy('terms-view',
@@ -440,7 +439,6 @@ class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Terms
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
-    # fields = '__all__'
     form_class = TermsCreateForm
 
     def get_context_data(self, **kwargs):
@@ -465,6 +463,7 @@ class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class CrewMembersView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return CrewMember.objects.filter(user=self.request.user)
+
     model = CrewMember
     context_object_name = 'object_list'
     filterset_class = CrewMembersFilter
@@ -480,7 +479,6 @@ class CrewMemberCreateView(LoginRequiredMixin, CreateView):
     template_name = 'work_logger/create_crew_member.html'
     form_class = CrewMemberCreateForm
     success_message = 'Success: Crew member created.'
-    # success_url = reverse_lazy('main-page')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -503,11 +501,6 @@ class CrewMemberCreateViewBS(LoginRequiredMixin, BSModalCreateView):
     success_message = 'Success: Crew member was created.'
     success_url = reverse_lazy('main-page')
 
-    # def form_valid(self, form):
-    #     user = self.request.user
-    #     f = form.save(commit=False)
-    #     f.user = user
-    #     return super().form_valid(form)
     def form_valid(self, form):
         if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
             form.instance.user = self.request.user
@@ -517,19 +510,10 @@ class CrewMemberCreateViewBS(LoginRequiredMixin, BSModalCreateView):
         else:
             return super().form_invalid(form)
 
-    # def get_success_url(self):
-    #     url = self.request.POST.get('URL')
-    #     return HttpResponseRedirect(url)
-
-    #     # return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
-    #     return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
-
 
 class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CrewMember
-    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
-    # fields = '__all__'
     form_class = CrewMemberCreateForm
 
     def get_context_data(self, **kwargs):
@@ -553,7 +537,6 @@ class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CrewMember
-    # success_url = reverse_lazy('main-page')
     template_name = 'work_logger/delete_form.html'
 
     def test_func(self):
@@ -564,7 +547,6 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
     def get_success_url(self):
         return reverse_lazy('crew-members-view',
