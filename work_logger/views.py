@@ -294,7 +294,9 @@ class CreateShootingDayView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['subproject'] = SubProject.objects.get(id=self.kwargs['pk'])
+        subproject = SubProject.objects.get(id=self.kwargs['pk'])
+        context['subproject'] = subproject
+        context['working_hours'] = subproject.terms.working_hours
         return context
 
     def get_success_url(self):
