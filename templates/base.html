@@ -18,31 +18,64 @@
 <body>
 
 
-<div class="navbar sticky-top navbar-light bg-light navbar-expand-lg justify-content-around">
-    <div class="navbar-nav text-uppercase ">
-        <h1 style="font-size: 60px">
-            <a class="nav-item nav-link" href="{% url 'index-view' %}">Film Crew Helper</a>
-        </h1>
-    </div>
-    <div class="navbar-nav text-uppercase ">
-        <a class="nav-item nav-link active" href="#"> <span class="sr-only"></span></a>
-        <a class="nav-item nav-link" href="{% url 'index-view' %}"><span style="color:#424242; font-family:'Quicksand';"
-                                                                         class="mb-0 h3">Home |</span></a>
-        <a class="nav-item nav-link" href="{% url 'about-page' %}"><span style="color:#424242; font-family:'Quicksand';"
-                                                                         class="mb-0 h3"> About |</span></a>
-        <a class="nav-item nav-link" href="{% url 'contact-page' %}"><span
-                style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Contact |</span></a>
-        {% if not user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'login' %}"><span style="color:#424242; font-family:'Quicksand';"
-                                                                        class="mb-0 h3"> Login </span></a>
-        {% else %}
-            <a class="nav-item nav-link" href="{% url 'edit_user' %}"><span
-                    style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> My Account |</span></a>
-            <a class="nav-item nav-link" href="{% url 'logout' %}"><span style="color:#424242; font-family:'Quicksand';"
-                                                                         class="mb-0 h3"> Logout</span></a>
-        {% endif %}
-    </div>
+<div class="sticky-top  bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid ">
 
+            <a class="navbar-brand ms-5" href="{% url 'index-view' %}">
+                <h1 class="display-3">
+                    Film Crew Helper
+                </h1>
+            </a>
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'index-view' %}"><span
+                                style="color:#424242; font-family:'Quicksand';"
+                                class="mb-0 h3">Home</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'about-page' %}"><span
+                                style="color:#424242; font-family:'Quicksand';"
+                                class="mb-0 h3"> About</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'contact-page' %}"><span
+                                style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Contact</span></a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="{% url 'login' %}"><span
+                                    style="color:#424242; font-family:'Quicksand';"
+                                    class="mb-0 h3"> Login </span></a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="{% url 'edit_user' %}"><span
+                                    style="color:#424242; font-family:'Quicksand';"
+                                    class="mb-0 h3"> My Account</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="{% url 'logout' %}"><span
+                                    style="color:#424242; font-family:'Quicksand';"
+                                    class="mb-0 h3"> Logout</span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+
+
+    </nav>
 </div>
 
 <div
