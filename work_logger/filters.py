@@ -21,16 +21,6 @@ class ProjectFilter(django_filters.FilterSet):
         exclude = ['user', ]
 
 
-# class MyRangeWidget(django_filters.widgets.RangeWidget):
-#
-#     def __init__(self, from_attrs=None, to_attrs=None, attrs=None):
-#         super(MyRangeWidget, self).__init__(attrs)
-#         if from_attrs:
-#             self.widgets[0].attrs.update(from_attrs)
-#         if to_attrs:
-#             self.widgets[1].attrs.update(to_attrs)
-
-
 class TermsFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Terms name:",
                       widget=forms.TextInput(attrs={'size': 30,'placeholder': 'insert terms name'}))
@@ -88,5 +78,3 @@ class CrewMembersFilter(django_filters.FilterSet):
         model = CrewMember
         fields = '__all__'
         exclude = ['user', 'contact_info']
-
-

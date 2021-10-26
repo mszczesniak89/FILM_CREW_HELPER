@@ -16,9 +16,6 @@ from django_filters.views import FilterView
 from bootstrap_modal_forms.generic import BSModalCreateView
 
 
-# Create your views here.
-
-
 class IndexView(View):
     def get(self, request):
         response = render(request, 'work_logger/home_page.html', )
@@ -75,23 +72,12 @@ class ProjectCreateViewBS(LoginRequiredMixin, UserFormKwargsMixin, BSModalCreate
     form_class = ProjectCreateFormBS
     success_message = 'Success: Project was created.'
 
-    # success_url = reverse_lazy('main-page')
-
-    # def get_initial(self):
-    #     self.initial.update({'user': self.request.user})
-    #     return self.initial
-
     def form_valid(self, form):
         if not self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
             form.instance.user = self.request.user
             return super().form_valid(form)
         else:
             return super().form_invalid(form)
-
-    # def get_form_kwargs(self, *args, **kwargs):
-    #     form_kwargs = super(ProjectCreateViewBS, self).get_form_kwargs(*args, **kwargs)
-    #     form_kwargs['user'] = self.request.user
-    #     return form_kwargs
 
     def get_success_url(self):
         return reverse_lazy('create-subproject-view', kwargs={'pk': self.object.pk})
@@ -109,7 +95,6 @@ class DeleteProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if logged_in_user == content_user:
             return True
         else:
-            # raise Http404("You are not authorized to access this page!")
             return False
 
 
@@ -117,7 +102,6 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Project
     success_url = reverse_lazy('main-page')
     template_name = 'work_logger/update_form.html'
-    # fields = '__all__'
     form_class = ProjectCreateForm
 
     def test_func(self):
@@ -128,7 +112,6 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -144,12 +127,6 @@ class SubProjectsView(LoginRequiredMixin, FilterView):
     context_object_name = 'object_list'
     filterset_class = SubProjectFilter
     template_name = 'work_logger/subprojects.html'
-
-    # def get_test_func(self):
-    #     if Project.objects.get(id=self.kwargs['pk']).user == self.request.user:
-    #         return False
-    #     else:
-    #         return True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -197,13 +174,11 @@ class DeleteSubProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
 
 class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = SubProject
     template_name = 'work_logger/update_form.html'
-    # fields = '__all__'
     form_class = SubProjectCreateForm
 
     def get_form_kwargs(self, *args, **kwargs):
@@ -227,7 +202,6 @@ class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
 
 class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -247,7 +221,6 @@ class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
             return True
         else:
             return False
-            # raise Http404("You are not authorized to access this page!")
 
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
@@ -323,7 +296,6 @@ class DeleteShootingDayView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ShootingDay
     template_name = 'work_logger/update_form.html'
-    # fields = '__all__'
     form_class = ShootingDayCreateForm
 
     def get_context_data(self, **kwargs):

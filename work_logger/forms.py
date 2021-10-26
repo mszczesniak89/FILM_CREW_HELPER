@@ -58,16 +58,6 @@ class ProjectCreateFormBS(UserKwargModelFormMixin, BSModalModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
-    #
-    # def __init__(self, *args, **kwargs):
-    #     self.user = kwargs['initial']['user']
-    #     super(ProjectCreateFormBS, self).__init__(*args, **kwargs)
-
-    # def save(self, commit=True):
-    #     obj = super(ProjectCreateFormBS, self).save(False)
-    #     obj.user = self.user
-    #     commit and obj.save()
-    #     return obj
 
 
 class TermsCreateForm(forms.ModelForm):
