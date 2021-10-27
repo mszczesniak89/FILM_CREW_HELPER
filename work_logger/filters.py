@@ -11,9 +11,9 @@ from work_logger.models import Project, SubProject, ShootingDay, Terms, CrewMemb
 
 class ProjectFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Project name:",
-                      widget=forms.TextInput(attrs={'size': 30,'placeholder': 'insert project name'}))
+                      widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert name'}))
     description = CharFilter(field_name='description', lookup_expr='icontains', label="Description:",
-                             widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert project description'}))
+                             widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert description'}))
 
     class Meta:
         model = Project
@@ -23,9 +23,9 @@ class ProjectFilter(django_filters.FilterSet):
 
 class TermsFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Terms name:",
-                      widget=forms.TextInput(attrs={'size': 30,'placeholder': 'insert terms name'}))
+                      widget=forms.TextInput(attrs={'size': 20,'placeholder': 'insert name'}))
     description = CharFilter(field_name='description', lookup_expr='icontains', label="Description:",
-                             widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert terms description'}))
+                             widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert description'}))
 
     class Meta:
         model = Terms
@@ -35,11 +35,11 @@ class TermsFilter(django_filters.FilterSet):
 
 class SubProjectFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Sub-project name:",
-                      widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert subproject name'}))
+                      widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert name'}))
     position = CharFilter(field_name='position', lookup_expr='icontains', label="Position:",
-                          widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert position'}))
+                          widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert position'}))
     description = CharFilter(field_name='description', lookup_expr='icontains', label="Description:",
-                             widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert description'}))
+                             widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert description'}))
 
     class Meta:
         model = SubProject
@@ -49,7 +49,7 @@ class SubProjectFilter(django_filters.FilterSet):
 
 class ShootingDayFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Name:",
-                      widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert name'}))
+                      widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert name'}))
     date = DateFilter(label="Date:",
                       widget=forms.SelectDateWidget(empty_label=["Year", "Month", "Day"], years=range(2000, 2050),
                                                     attrs={
@@ -58,7 +58,7 @@ class ShootingDayFilter(django_filters.FilterSet):
                                                     )
                       )
     description = CharFilter(field_name='description', lookup_expr='icontains', label="Description:",
-                             widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert description'}))
+                             widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert description'}))
 
     class Meta:
         model = ShootingDay
@@ -68,11 +68,11 @@ class ShootingDayFilter(django_filters.FilterSet):
 
 class CrewMembersFilter(django_filters.FilterSet):
     name = CharFilter(field_name='name', lookup_expr='icontains', label="Name:",
-                      widget=forms.TextInput(attrs={'size': 30,'placeholder': 'insert name'}))
+                      widget=forms.TextInput(attrs={'size': 20,'placeholder': 'insert name'}))
     surname = CharFilter(field_name='surname', lookup_expr='icontains', label="Surname:",
-                      widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert surname'}))
+                      widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert surname'}))
     position = CharFilter(field_name='position', lookup_expr='icontains', label="Position:",
-                          widget=forms.TextInput(attrs={'size': 30, 'placeholder': 'insert position'}))
+                          widget=forms.TextInput(attrs={'size': 20, 'placeholder': 'insert position'}))
 
     class Meta:
         model = CrewMember
