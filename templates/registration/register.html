@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
+    {% load crispy_forms_tags %}
 
     <div class="container h-100">
         <div class="d-flex justify-content-center h-100">
@@ -11,7 +12,7 @@
 
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-2" id="username_div">
                             <div class="input-group-append">
                                 <span class="btn btn-dark btn-social mx-2"><i class="fas fa-user"></i></span>
                             </div>
@@ -59,4 +60,38 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            // catch the form's submit event
+            $('#id_username').keyup(function () {
+                // create an AJAX call
+                $.ajax({
+                    data: $(this).serialize(), // get the form data
+                    url: "{% url 'validate_username' %}",
+                    // on success
+                    success: function (response) {
+                        if (response.is_taken == true) {
+                            $('#id_username').removeClass('is-valid').addClass('is-invalid');
+                            $('#username_div').after('<div class="input-group mb-2 d-flex justify-content-center"><div class="alert alert-danger m-0" id="usernameError">This username is not available!</div></div>')
+                        } else {
+                            $('#id_username').removeClass('is-invalid').addClass('is-valid');
+                            $('#usernameError').remove();
+
+                        }
+
+                    },
+                    // on error
+                    error: function (response) {
+                        // alert the error if any error occured
+                        console.log(response.responseJSON.errors)
+                    }
+                });
+
+                return false;
+            });
+        })
+    </script>
 {% endblock %}

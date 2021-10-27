@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from django.urls import reverse_lazy
@@ -31,6 +32,15 @@ class SignUpView(AnonymousRequiredMixin, CreateView):
         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], )
         login(self.request, user)
         return redirect(self.success_url)
+
+
+def validate_username(request):
+    """Check username availability"""
+    username = request.GET.get('username', None)
+    response = {
+        'is_taken': CustomUser.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
 
 
 class EditUser(LoginRequiredMixin, UpdateView):

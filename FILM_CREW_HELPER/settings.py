@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'bootstrap_modal_forms',
     'accounts',
     'work_logger',
-
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
