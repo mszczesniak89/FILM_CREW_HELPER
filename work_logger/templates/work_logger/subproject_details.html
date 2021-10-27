@@ -5,14 +5,13 @@
     <div class="container h-100">
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
-                <div class="card-body text-center">
-                    <p>
-                    <h2 id="form-title">{{ object.parent }} - {{ object.name }}</h2>
+                <div class="card-body text-center p-0">
+                    <h2 id="form-title">{{ object.parent }}</h2>
+                    <h2>{{ object.name }}</h2>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="card-body text-center">
-
-                        <p><h4 class="card-text">Position: {{ object.position }}</h4>
+                        <h4 class="card-text">Position: {{ object.position }}</h4>
                         <p><h4 class="card-text">Description: {{ object.description }} </h4>
                         <p><h4 class="card-text">Terms: </h4>
                         <p><h6 class="card-text">Name: {{ object.terms.name }} </h6>
