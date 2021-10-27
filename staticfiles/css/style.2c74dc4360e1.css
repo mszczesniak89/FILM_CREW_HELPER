@@ -1,6 +1,6 @@
 body {
   /* Location of the image */
-  background-image: url('/static/images/background.png');
+  background-image: url("/static/images/background.21dc3582d979.png");
 
   /* Image is centered vertically and horizontally at all times */
   background-position: center center;
@@ -22,7 +22,7 @@ body {
   body {
     /* The file size of this background image is 93% smaller
      * to improve page load speed on mobile internet connections */
-    background-image: url('/static/images/background.png');
+    background-image: url("/static/images/background.21dc3582d979.png");
   }
 	}
 div.bg {
