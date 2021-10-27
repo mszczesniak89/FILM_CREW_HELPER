@@ -6,21 +6,21 @@
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
                 <div class="card-body text-center p-0">
-                    <h2 id="form-title">{{ object.parent }}</h2>
-                    <h2>{{ object.name }}</h2>
+                    <h4 id="form-title">{{ object.parent }}</h4>
+                    <h5>{{ object.name }}</h5>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="card-body text-center">
-                        <h4 class="card-text">Position: {{ object.position }}</h4>
-                        <p><h4 class="card-text">Description: {{ object.description }} </h4>
-                        <p><h4 class="card-text">Terms: </h4>
+                        <h5 class="card-text">Position: {{ object.position }}</h5>
+                        <p><h5 class="card-text">Description: {{ object.description }} </h5>
+                        <p><h5 class="card-text">Terms: </h5>
                         <p><h6 class="card-text">Name: {{ object.terms.name }} </h6>
                         <p><h6 class="card-text">Pay period: {{ object.terms.get_pay_period_display }} </h6>
                         <p><h6 class="card-text">Base rate: {{ object.terms.base_rate }} </h6>
                         <p><h6 class="card-text">Overtime rate: {{ object.terms.ot_rate }} </h6>
                         <p><h6 class="card-text">Camera overtime rate: {{ object.terms.camera_ot_rate }} </h6>
                         <p><h6 class="card-text">Extras: {{ object.terms.extras }} </h6>
-                        <p><h4 class="card-text">Crew Members: </h4>
+                        <p><h5 class="card-text">Crew Members: </h5>
                         <p>
                         <h6>
                         <span class="card-text">
