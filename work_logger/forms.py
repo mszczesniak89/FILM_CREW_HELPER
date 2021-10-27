@@ -14,7 +14,7 @@ class ProjectCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Project name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description'}))
+        attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': 4, 'cols': 10}))
 
     class Meta:
         model = Project
@@ -50,7 +50,7 @@ class ProjectCreateFormBS(UserKwargModelFormMixin, BSModalModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Project name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description...'}))
+        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 4, 'cols': 10}))
 
     class Meta:
         model = Project
@@ -64,7 +64,7 @@ class TermsCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 4, 'cols': 10}))
+        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 2, 'cols': 10}))
     pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
     working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select(attrs={'style': 'width:420px'}))
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
@@ -85,7 +85,7 @@ class TermsCreateFormBS(BSModalModelForm):
     name = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description...'}))
+        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 2, 'cols': 10}))
     pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
     working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select(attrs={'style': 'width:420px'}))
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
@@ -110,7 +110,7 @@ class CrewMemberCreateFormBS(BSModalModelForm):
     position = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Position...'}))
     contact_info = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Contact info...'}))
+        attrs={'class': 'form-control', 'placeholder': 'Contact info...', 'rows': 3, 'cols': 10}))
 
     class Meta:
         model = CrewMember
@@ -125,7 +125,7 @@ class ShootingDayCreateForm(forms.ModelForm):
     date = forms.DateTimeField(label="Date:", widget=forms.DateInput(attrs={'type': 'date',
                                                                                         'style': 'width:300px'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 4, 'cols': 10}))
+        attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 2, 'cols': 10}))
     start_hour = forms.DateTimeField(label="Start hour:", widget=forms.DateTimeInput(attrs={'id': "start_hour", 'type': 'datetime-local',
                                                                                         'style': 'width:300px'}))
     end_hour = forms.DateTimeField(label="End hour:", widget=forms.TimeInput(attrs={'id': "end_hour", 'type': 'datetime-local',
@@ -156,7 +156,7 @@ class CrewMemberCreateForm(forms.ModelForm):
     position = forms.CharField(max_length=128, widget=forms.TextInput(
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Position...'}))
     contact_info = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Contact info...'}))
+        attrs={'class': 'form-control', 'placeholder': 'Contact info...', 'rows': 3, 'cols': 10}))
 
     class Meta:
         model = CrewMember
