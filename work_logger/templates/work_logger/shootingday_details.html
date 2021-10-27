@@ -14,14 +14,29 @@
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="card-body text-center">
-                        <h6 class="card-text">Date: {{ object.date }}</h6>
-                        <p><h6 class="card-text">Start time: {{ object.start_hour.time }}</h6>
-                        <p><h6 class="card-text">End time: {{ object.end_hour.time }} </h6>
-                        <p><h6 class="card-text">Overtime: {{ object.ot }} </h6>
-                        <p><h6 class="card-text">Camera overtime: {{ object.camera_ot }} </h6>
-                        <p><h6 class="card-text">TOC: {{ object.toc }} </h6>
-                        <p><h6 class="card-text">Extras: {{ object.extras }} </h6>
-                        <p><h6 class="card-text">Description: {{ object.description }} </h6>
+                        <div class="d-flex justify-content-center">
+                            <table class="table">
+                                <tr>
+                                    <td colspan="2"><h6 class="card-text">Date: {{ object.date }}</h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 class="card-text">Start time: {{ object.start_hour.time }}</h6></td>
+                                    <td><h6 class="card-text">End time: {{ object.end_hour.time }} </h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 class="card-text">Overtime: {{ object.ot }} </h6></td>
+                                    <td><h6 class="card-text">Camera overtime: {{ object.camera_ot }} </h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 class="card-text">TOC: {{ object.toc }} </h6></td>
+                                    <td><h6 class="card-text">Extras: {{ object.extras }} </h6></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><h6 class="card-text">Description: {{ object.description }} </h6>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
