@@ -40,13 +40,13 @@ div.bg {
 
 
 .table-wrapper {
-    margin: 10px 70px 70px;
+    margin: 2% 2% 2%;
     box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
 .fl-table {
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: normal;
     border: none;
     border-collapse: collapse;
@@ -59,12 +59,12 @@ div.bg {
 
 .fl-table td, .fl-table th {
     text-align: center;
-    padding: 4px;
+    padding: 0.15%;
 }
 
 .fl-table td {
     border-right: 1px solid #f8f8f8;
-    font-size: 12px;
+    font-size: 1rem;
 }
 
 .fl-table thead th {
@@ -94,7 +94,7 @@ div.bg {
         content: "Scroll horizontally >";
         display: block;
         text-align: right;
-        font-size: 11px;
+        font-size: 1rem;
         color: white;
         padding: 0 0 10px;
     }
@@ -118,7 +118,7 @@ div.bg {
     }
 
     .fl-table td, .fl-table th {
-        padding: 20px .625em .625em .625em;
+        padding: 0.625em .625em .625em .625em;
         height: 60px;
         vertical-align: middle;
         box-sizing: border-box;
@@ -234,7 +234,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .user_card {
-    width: 450px;
+    width: 30rem;
     margin-top: auto;
     margin-bottom: auto;
     background: lightgrey;
@@ -242,7 +242,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 10px;
+    padding: 0.5rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -251,7 +251,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form_container {
-    margin-top: 20px;
+    margin-top: 1rem;
 }
 
 #form-title {
@@ -289,8 +289,8 @@ h1, h2, h3, h4, h5, h6 {
 #messages {
     background-color: grey;
     color: #fff;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 0.3rem;
+    margin-top: 0.4rem;
 }
 
 
