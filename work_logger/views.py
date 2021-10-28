@@ -1,6 +1,7 @@
 from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import request, HttpResponseRedirect, Http404, JsonResponse
 import iso8601
 from datetime import datetime, timedelta
@@ -282,22 +283,22 @@ def check_toc(request):
     new_datetime = iso8601.parse_date(request.GET.get('start_hour', None))
     subproject = SubProject.objects.get(id=request.GET.get('subproject'))
     previous_date = new_datetime.date() - timedelta(days=1)
-    previous_shooting_day = ShootingDay.objects.get(date=previous_date, subproject=subproject)
-    if previous_shooting_day:
-        diff = new_datetime - previous_shooting_day.end_hour
-        if diff < timedelta(hours=11):
-            response = {
-                'is_broken': True,
-            }
-            return JsonResponse(response)
-        else:
-            response = {
-                'is_broken': False,
-            }
-            return JsonResponse(response)
-    else:
+    try:
+        previous_shooting_day = ShootingDay.objects.get(date=previous_date, subproject=subproject)
+    except ObjectDoesNotExist:
         response = {
             'is_broken': False
+        }
+        return JsonResponse(response)
+    diff = new_datetime - previous_shooting_day.end_hour
+    if diff < timedelta(hours=11):
+        response = {
+            'is_broken': True,
+        }
+        return JsonResponse(response)
+    else:
+        response = {
+            'is_broken': False,
         }
         return JsonResponse(response)
 

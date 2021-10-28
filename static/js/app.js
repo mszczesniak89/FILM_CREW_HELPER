@@ -1,7 +1,9 @@
 
 const ot_prompt = document.querySelector("#ot_prompt");
+const date = document.querySelector("#date");
 const start_hour = document.querySelector("#start_hour");
 const end_hour = document.querySelector("#end_hour");
+let date = 0;
 let start = 0;
 let end = 0;
 const working_hours_context = document.querySelector("#working_hours").value;
@@ -15,6 +17,15 @@ if (working_hours_context === '1') {
 } else if (working_hours_context === '3') {
       working_hours = 12;
 }
+
+date.addEventListener('blur', function (event) {
+      date = date.value;
+      start_hour.value = date;
+      end_hour.value = date;
+});
+
+
+
 
 
 start_hour.addEventListener('blur', function (event) {
