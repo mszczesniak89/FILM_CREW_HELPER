@@ -29,8 +29,14 @@
                         <h6 id="form-title">
                             {{ form.start_hour.label }}
                         </h6>
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-2" id="start_hour_div">
                             {{ form.start_hour }}
+                        </div>
+                        <div class="container d-flex justify-content-center m-0">
+                            <div class="alert alert-danger p-1 m-1 px-3" role="alert" style="display:none;
+                            font-family:'Quicksand'" id="toc_prompt">
+                                Broken turnaround!!
+                            </div>
                         </div>
                         <h6 id="form-title">
                             {{ form.end_hour.label }}
@@ -74,5 +80,45 @@
         </div>
     </div>
 
+
+{% endblock %}
+{% block javascript %}
+
+ <script>
+        $(document).ready(function () {
+            // catch the form's submit event
+            console.log('caught doc');
+            $('#start_hour').blur(function () {
+                // create an AJAX call
+                console.log('caught!');
+                let start_hour = this.value;
+                let subproject = document.querySelector('#id_subproject').value;
+                let toc_prompt = document.querySelector('#toc_prompt');
+                console.log(start_hour);
+                console.log(subproject);
+                $.ajax({
+                    data: {subproject, start_hour}, // get the form data
+                    url: "{% url 'check_toc' %}",
+                    // on success
+                    success: function (response) {
+                        if (response.is_broken == true) {
+                            toc_prompt.style.display = "block";
+                        } else {
+                            toc_prompt.style.display = "none";
+
+                        }
+
+                    },
+                    // on error
+                    error: function (response) {
+                        // alert the error if any error occured
+                        console.log(response.responseJSON.errors)
+                    }
+                });
+
+                return false;
+            });
+        })
+    </script>
 
 {% endblock %}

@@ -1,7 +1,9 @@
 from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
-from django.http import request, HttpResponseRedirect, Http404
+from django.http import request, HttpResponseRedirect, Http404, JsonResponse
+import iso8601
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
@@ -274,6 +276,30 @@ class CreateShootingDayView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('shooting-days-view', kwargs={'pk': self.object.subproject.pk})
+
+
+def check_toc(request):
+    new_datetime = iso8601.parse_date(request.GET.get('start_hour', None))
+    subproject = SubProject.objects.get(id=request.GET.get('subproject'))
+    previous_date = new_datetime.date() - timedelta(days=1)
+    previous_shooting_day = ShootingDay.objects.get(date=previous_date, subproject=subproject)
+    if previous_shooting_day:
+        diff = new_datetime - previous_shooting_day.end_hour
+        if diff < timedelta(hours=11):
+            response = {
+                'is_broken': True,
+            }
+            return JsonResponse(response)
+        else:
+            response = {
+                'is_broken': False,
+            }
+            return JsonResponse(response)
+    else:
+        response = {
+            'is_broken': False
+        }
+        return JsonResponse(response)
 
 
 class DeleteShootingDayView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

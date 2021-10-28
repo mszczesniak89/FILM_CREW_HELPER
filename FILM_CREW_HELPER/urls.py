@@ -22,7 +22,7 @@ from work_logger.views import IndexView, MainPageView, SubProjectsView, CreatePr
     ShootingDaysView, CreateShootingDayView, UpdateProjectView, UpdateSubProjectView, TermsCreateView, \
     DeleteShootingDayView, UpdateShootingDayView, ShootingDayDetailView, AboutView, ContactView, TermsView, \
     DeleteTermsView, UpdateTermsView, CrewMembersView, CrewMemberCreateView, UpdateCrewMemberView, DeleteCrewMemberView, \
-    SubProjectDetailView
+    SubProjectDetailView, check_toc
 
 
 urlpatterns = [
@@ -50,6 +50,7 @@ urlpatterns = [
     path('create_crew_member_bs/', CrewMemberCreateViewBS.as_view(), name='create_crew_member_bs'),
     path('shooting_days/<int:pk>/', ShootingDaysView.as_view(), name='shooting-days-view'),
     path('create_shootingday/<int:pk>/', CreateShootingDayView.as_view(), name='create-shootingday-view'),
+    path('check_toc', check_toc, name='check_toc'),
     path('delete_shootingday/<int:pk>/', DeleteShootingDayView.as_view(), name='delete_shootingday_view'),
     path('update_shootingday/<int:pk>/', UpdateShootingDayView.as_view(), name='update_shootingday_view'),
     path('shootingday/<int:pk>/', ShootingDayDetailView.as_view(), name='shootingday_detail_view'),
