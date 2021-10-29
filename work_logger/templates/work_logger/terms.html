@@ -6,11 +6,11 @@
             <table class="fl-table">
                 <thead>
                 <tr>
-                    <th><h5>SEARCH BY:</h5></th>
+                    <th class="priority-5"><h5>SEARCH BY:</h5></th>
                     {% for field in filter.form %}
-                        <td><h5>{{ field.label }} {{ field }}</h5></td>
+                        <td class="priority-5"><h5>{{ field.label }} {{ field }}</h5></td>
                     {% endfor %}
-                    <td>
+                    <td class="priority-5">
                         <button type="submit" class="btn btn-outline-secondary" style="font-family:'Quicksand';">
                             Search
                         </button>
@@ -42,9 +42,9 @@
                 </tr>
                 <tr>
                     <th><h2>Name:</h2></th>
-                    <th><h2 style="color:white;">Description:</h2></th>
-                    <th><h2>Pay period:</h2></th>
-                    <th><h2 style="color:white;">Base rate:</h2></th>
+                    <th class="priority-3"><h2 style="color:white;">Description:</h2></th>
+                    <th class="priority-3"><h2>Pay period:</h2></th>
+                    <th class="priority-3"><h2 style="color:white;">Base rate:</h2></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -52,9 +52,9 @@
                 {% for item in object_list %}
                     <tr>
                         <td><h4>{{ item.name }}</h4></td>
-                        <td><h5>{{ item.description }}</h5></td>
-                        <td><h5>{{ item.get_pay_period_display }}</h5></td>
-                        <td><h5>{{ item.base_rate }}</h5></td>
+                        <td class="priority-3"><h5>{{ item.description }}</h5></td>
+                        <td class="priority-3"><h5>{{ item.get_pay_period_display }}</h5></td>
+                        <td class="priority-3"><h5>{{ item.base_rate }}</h5></td>
                         <td><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6>UPDATE</h6></a>
                             <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6>DELETE</h6></a>
                         </td>

@@ -6,11 +6,11 @@
             <table class="fl-table">
                 <thead>
                 <tr>
-                    <th><h5>SEARCH BY:</h5></th>
+                    <th class="priority-5"><h5>SEARCH BY:</h5></th>
                     {% for field in filter.form %}
-                        <td><h5>{{ field.label }} {{ field }}</h5></td>
+                        <td class="priority-5"><h5>{{ field.label }} {{ field }}</h5></td>
                     {% endfor %}
-                    <td>
+                    <td class="priority-5">
                         <button type="submit" class="btn btn-outline-secondary">Search</button>
                     </td>
                 </tr>
@@ -22,15 +22,14 @@
                 </tr>
                 <tr>
                     <td colspan="5">
-
                         <div class="mt-0 mb-0 d-flex justify-content-center">
-                            <a class="nav-item nav-link" href="{% url 'create_terms' pk=project.id %}">
+                            <a class="nav-item nav-link priority-3" href="{% url 'create_terms' pk=project.id %}">
                                 <h6 class="mb-0">ADD NEW TERMS</h6>
                             </a>
                             <a class="nav-item nav-link" href="{% url 'terms-view' pk=project.id %}">
                                 <h6 class="mb-0">VIEW TERMS</h6>
                             </a>
-                            <a class="nav-item nav-link" href="{% url 'create_crew_member' pk=project.id %}">
+                            <a class="nav-item nav-link priority-3" href="{% url 'create_crew_member' pk=project.id %}">
                                 <h6 class="mb-0">ADD CREW MEMBERS</h6>
                             </a>
                             <a class="nav-item nav-link" href="{% url 'crew-members-view' pk=project.id %}">
@@ -60,7 +59,7 @@
                 <tr>
                     <th><h2>Sub-project name:</h2></th>
                     <th><h2 style="color:white;">Position:</h2></th>
-                    <th><h2>Description:</h2></th>
+                    <th class="priority-5"><h2>Description:</h2></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -70,7 +69,7 @@
                         <td><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4>{{ item.name }}</h4></a>
                         </td>
                         <td><h4>{{ item.position }}</h4></td>
-                        <td><h5>{{ item.description }}</h5></td>
+                        <td class="priority-5"><h5>{{ item.description }}</h5></td>
 
                         <td>
                             <a class="nav-item nav-link m-0 p-0" href="{{ item.get_detail_url }}"><h6>DETAILS</h6></a>
