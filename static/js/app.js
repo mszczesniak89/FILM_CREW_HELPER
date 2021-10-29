@@ -1,3 +1,6 @@
+/*jshint esversion: 6 */
+/*global console*/
+'use strict';
 
 const ot_prompt = document.querySelector("#ot_prompt");
 const date = document.querySelector("#id_date");

@@ -95,10 +95,7 @@ class DeleteProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -111,10 +108,7 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -173,10 +167,7 @@ class DeleteSubProjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
 
 class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -201,10 +192,7 @@ class UpdateSubProjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
 
 class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -220,10 +208,7 @@ class SubProjectDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
 
 class ShootingDaysView(LoginRequiredMixin, FilterView):
@@ -286,21 +271,11 @@ def check_toc(request):
     try:
         previous_shooting_day = ShootingDay.objects.get(date=previous_date, subproject=subproject)
     except ObjectDoesNotExist:
-        response = {
-            'is_broken': False
-        }
+        response = {'is_broken': False}
         return JsonResponse(response)
     diff = new_datetime - previous_shooting_day.end_hour
-    if diff < timedelta(hours=11):
-        response = {
-            'is_broken': True,
-        }
-        return JsonResponse(response)
-    else:
-        response = {
-            'is_broken': False,
-        }
-        return JsonResponse(response)
+    response = {'is_broken': True} if diff < timedelta(hours=11) else {'is_broken': False}
+    return JsonResponse(response)
 
 
 class DeleteShootingDayView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -314,10 +289,7 @@ class DeleteShootingDayView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.subproject.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            raise Http404("You are not authorized to access this page!")
+        return logged_in_user == content_user
 
 
 class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -342,11 +314,7 @@ class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.subproject.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
-
+        return logged_in_user == content_user
 
 class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ShootingDay
@@ -361,10 +329,7 @@ class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.subproject.parent.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
 
 class TermsCreateView(LoginRequiredMixin, CreateView):
@@ -426,10 +391,7 @@ class DeleteTermsView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
     def get_success_url(self):
         return reverse_lazy('terms-view',
@@ -451,10 +413,7 @@ class UpdateTermsView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
     def get_success_url(self):
         return reverse_lazy('terms-view',
@@ -526,10 +485,7 @@ class UpdateCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
     def get_success_url(self):
         return reverse_lazy('crew-members-view',
@@ -544,10 +500,7 @@ class DeleteCrewMemberView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         logged_in_user = self.request.user
         obj = self.get_object()
         content_user = obj.user
-        if logged_in_user == content_user:
-            return True
-        else:
-            return False
+        return logged_in_user == content_user
 
     def get_success_url(self):
         return reverse_lazy('crew-members-view',
