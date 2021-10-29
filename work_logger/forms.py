@@ -65,8 +65,8 @@ class TermsCreateForm(forms.ModelForm):
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 2, 'cols': 10}))
-    pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
-    working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select(attrs={'style': 'width:420px'}))
+    pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select())
+    working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select())
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
                                                                    'placeholder': 'Base rate...'}))
     ot_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
@@ -86,8 +86,8 @@ class TermsCreateFormBS(BSModalModelForm):
         attrs={'size': '35', 'class': 'form-control', 'placeholder': 'Terms name...'}))
     description = forms.CharField(required=False, max_length=512, widget=forms.Textarea(
         attrs={'class': 'form-control', 'placeholder': 'Description...', 'rows': 2, 'cols': 10}))
-    pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select(attrs={'style': 'width:420px'}))
-    working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select(attrs={'style': 'width:420px'}))
+    pay_period = forms.ChoiceField(choices=PAY_PERIODS, widget=forms.Select())
+    working_hours = forms.ChoiceField(choices=WORKING_HOURS, widget=forms.Select())
     base_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
                                                                    'placeholder': 'Base rate...'}))
     ot_rate = forms.DecimalField(widget=forms.NumberInput(attrs={'size': '35', 'class': 'form-control',
