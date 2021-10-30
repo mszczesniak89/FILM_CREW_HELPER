@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
     <div class="d-flex justify-content-center">
-        <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5" style="--bs-bg-opacity: .7;">
+        <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-5" style="--bs-bg-opacity: .7;">
             <div class="card-body text-center">
                 <h3 class="card-text">Are you sure you want to
                     delete?</h3>
@@ -12,8 +12,23 @@
                         <td colspan="2"><p><input type="submit" value="YES!"></p></td>
                     </tr>
                 </form>
+                <div class="d-flex justify-content-center mt-3">
+                    <a class="nav-item nav-link p-0" href="" id="refURL">
+                        <h6>BACK</h6>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        let refURL = document.referrer;
+        let target = document.querySelector("#refURL");
+        target.href = refURL
+        console.log("yup that works")
+        console.log(refURL)
+    </script>
 {% endblock %}

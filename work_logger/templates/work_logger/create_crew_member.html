@@ -65,6 +65,11 @@
         </div>
     </div>
 
+
+
+{% endblock %}
+
+{% block javascript %}
     <script type="text/javascript">
         let refURL = document.referrer;
         let target = document.querySelector("#refURL");
@@ -72,5 +77,4 @@
         console.log("yup that works")
         console.log(refURL)
     </script>
-
 {% endblock %}
