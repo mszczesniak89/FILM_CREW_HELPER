@@ -23,13 +23,10 @@ if (working_hours_context === '1') {
 
 date.addEventListener('blur', function (event) {
       date_value = date.value;
-      console.log(date_value);
       let temp_start = new Date(date_value);
       let temp_end = new Date (date_value);
       temp_start.setHours(8);
       temp_end.setHours(20);
-      console.log(temp_start);
-      console.log(temp_start.toISOString().substring(0, 16));
       start_hour.value = temp_start.toISOString().substring(0, 16);
       end_hour.value = temp_end.toISOString().substring(0, 16);
 });
