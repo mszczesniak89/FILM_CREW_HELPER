@@ -1,3 +1,5 @@
+import math
+
 from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
@@ -274,7 +276,8 @@ def check_toc(request):
         response = {'is_broken': False}
         return JsonResponse(response)
     diff = new_datetime - previous_shooting_day.end_hour
-    response = {'is_broken': True} if diff < timedelta(hours=11) else {'is_broken': False}
+    toc = math.ceil((timedelta(hours=11) - diff).seconds / 3600)
+    response = {'is_broken': True, 'toc': toc} if diff < timedelta(hours=11) else {'is_broken': False}
     return JsonResponse(response)
 
 
