@@ -44,7 +44,6 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class CustomUserPasswordReset(PasswordResetForm):
-    email = forms.EmailField(label="Email", max_length=254)
     captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     class Meta:
