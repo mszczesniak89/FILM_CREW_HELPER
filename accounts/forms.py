@@ -12,6 +12,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         attrs={'class': 'form-control', 'placeholder': 'Username...'}))
     password = forms.CharField(max_length=16, widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password...'}))
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -44,6 +45,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 class CustomUserPasswordReset(PasswordResetForm):
     email = forms.EmailField(label="Email", max_length=254)
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     class Meta:
         model = CustomUser
