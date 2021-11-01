@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'work_logger',
     'crispy_forms',
+    'captcha',
 ]
 
 MIDDLEWARE = [

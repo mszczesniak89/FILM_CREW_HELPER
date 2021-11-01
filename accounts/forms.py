@@ -1,3 +1,5 @@
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 from django import forms
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
@@ -17,6 +19,7 @@ class CustomUserCreationForm(UserCreationForm):
         attrs={'class': 'form-control', 'placeholder': 'Password...'}))
     password2 = forms.CharField(max_length=16, widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Re-enter password...'}))
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     class Meta:
         model = CustomUser
@@ -28,7 +31,6 @@ class CustomUserCreationForm(UserCreationForm):
             'email': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'E-mail....'}),
-
         }
 
 
