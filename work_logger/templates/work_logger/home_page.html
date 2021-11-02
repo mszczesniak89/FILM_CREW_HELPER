@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
 {% block zawartosc %}
-    <link href="/static/dist/mfb.css" rel="stylesheet">
-    <script src="/static/dist/mfb.js"></script>
-
     <div class="container">
         <div class="d-flex justify-content-center">
             <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-5" style="--bs-bg-opacity: .7;">
@@ -40,28 +37,4 @@
             </div>
         </div>
     </div>
-
-    <ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover">
-        <li class="mfb-component__wrap">
-            <a href="#" class="mfb-component__button--main">
-                <i class="mfb-component__main-icon--resting fas fa-plus-circle fa-2x"></i>
-                <i class="mfb-component__main-icon--active fas fa-minus-circle fa-2x"></i>
-            </a>
-            <ul class="mfb-component__list">
-                <li>
-                    <a href="https://github.com/mszczesniak89" data-mfb-label="Follow me on GitHub"
-                       class="mfb-component__button--child">
-                        <i class="mfb-component__child-icon fab fa-github fa-2x"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="mailto: mszczesniak@live.com"
-                       data-mfb-label="Email me" class="mfb-component__button--child">
-                        <i class="mfb-component__child-icon fas fa-envelope fa-2x"></i>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
 {% endblock %}

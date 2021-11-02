@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link href="/static/dist/mfb.css" rel="stylesheet">
+    <script src="/static/dist/mfb.js"></script>
     <title>FILM CREW HELPER</title>
 
 </head>
@@ -79,11 +81,32 @@
 </div>
 
 
-    {% block zawartosc %}
+{% block zawartosc %}
 
+{% endblock %}
+<ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover">
+    <li class="mfb-component__wrap">
+        <a href="#" class="mfb-component__button--main">
+            <i class="mfb-component__main-icon--resting fas fa-plus-circle fa-2x"></i>
+            <i class="mfb-component__main-icon--active fas fa-minus-circle fa-2x"></i>
+        </a>
+        <ul class="mfb-component__list">
+            <li>
+                <a href="https://github.com/mszczesniak89" data-mfb-label="Follow me on GitHub"
+                   class="mfb-component__button--child">
+                    <i class="mfb-component__child-icon fab fa-github fa-2x"></i>
+                </a>
+            </li>
 
-    {% endblock %}
-
+            <li>
+                <a href="mailto: mszczesniak@live.com"
+                   data-mfb-label="Email me" class="mfb-component__button--child">
+                    <i class="mfb-component__child-icon fas fa-envelope fa-2x"></i>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
 <footer class="footer bg-light">
     <div class="container">
         <div class="row align-items-center">
@@ -155,7 +178,7 @@
 
 
 
-    <script src="/static/js/app.js" type="text/javascript"></script>
+<script src="/static/js/app.js" type="text/javascript"></script>
 </body>
 
 </html>
