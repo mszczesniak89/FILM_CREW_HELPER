@@ -319,6 +319,7 @@ class UpdateShootingDayView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         content_user = obj.subproject.parent.user
         return logged_in_user == content_user
 
+
 class ShootingDayDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ShootingDay
     template_name = 'work_logger/shootingday_details.html'
