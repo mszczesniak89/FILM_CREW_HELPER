@@ -115,10 +115,43 @@ div.bg {
     background: #F8F8F8;
 }
 
+
+h1.logo {
+    font-size:4rem;
+}
+
+h2.home {
+    font-size: 2.25rem;
+}
+
+h4.home {
+    font-size: 1.5rem;
+}
+h3.menu {
+    font-size: 1.70rem;
+}
+
 @media screen and (max-width: 1225px) and (min-width: 1045px) {
-    .priority-5{
-        display:none;
+    .priority-5 {
+        display: none;
     }
+
+    h1.logo {
+        font-size: 3.5rem;
+    }
+
+    h2.home {
+        font-size: 2.25rem;
+    }
+
+    h4.home {
+        font-size: 1.5rem;
+    }
+    h3.menu {
+    font-size: 1.65rem;
+}
+
+
 }
 
 @media screen and (max-width: 1045px) and (min-width: 835px) {
@@ -128,7 +161,21 @@ div.bg {
     .priority-4{
         display:none;
     }
+        h1.logo {
+    font-size: 3rem;
 }
+            h2.home {
+        font-size: 2rem;
+    }
+
+    h4.home {
+        font-size: 1rem;
+    }
+    h3.menu {
+    font-size: 1.45rem;
+}
+}
+
 
 @media screen and (max-width: 835px) and (min-width: 300px) {
     .priority-5{
@@ -140,7 +187,21 @@ div.bg {
     .priority-3{
         display:none;
     }
+    h1.logo {
+        font-size:2.5rem;
 }
+                h2.home {
+        font-size: 1.5rem;
+    }
+
+    h4.home {
+        font-size: 1rem;
+    }
+    h3.menu {
+    font-size: 1.40rem;
+}
+}
+
 
 @media screen and (max-width: 300px) {
     .priority-5{
@@ -155,6 +216,21 @@ div.bg {
     .priority-2{
         display:none;
     }
+    h1.logo {
+        font-size:2.5rem;
+}
+                h2.home {
+        font-size: 1.5rem;
+    }
+
+    h4.home {
+        font-size: 1rem;
+    }
+        h3.menu {
+    font-size: 1.35rem;
+}
+
+
 
 }
 
@@ -162,6 +238,22 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Quicksand';
     color: #424242;
 }
+
+/*h1 {*/
+/*    font-size:4vw;*/
+/*}*/
+/*h2 {*/
+/*    font-size:2.5vw;*/
+/*}*/
+/*h3 {*/
+/*    font-size:1.5vw;*/
+/*}*/
+
+
+
+
+
+
 
 .glow-on-hover {
     width: 220px;

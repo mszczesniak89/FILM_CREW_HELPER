@@ -20,58 +20,48 @@
 <body>
 
 
-<div class="sticky-top  bg-light">
+<div class="sticky-top bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
 
-            <a class="navbar-brand ms-3" href="{% url 'index-view' %}">
-                <h1 class="display-3">
-                    Film Crew Helper
-                </h1>
-            </a>
+        <a class="navbar-brand ms-3" href="{% url 'index-view' %}">
+            <h1 class="logo">
+                Film Crew Helper
+            </h1>
+        </a>
 
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
+                <li class="nav-item">
+                    <a class="nav-link text-uppercase" href="{% url 'index-view' %}"><h3 class="menu">Home</h3></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-uppercase" href="{% url 'about-page' %}"><h3 class="menu">About</h3></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-uppercase" href="{% url 'contact-page' %}"><h3 class="menu">Contact</h3></a>
+                </li>
+                {% if not user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="{% url 'index-view' %}"><span
-                                style="color:#424242; font-family:'Quicksand';"
-                                class="mb-0 h3">Home</span></a>
+                        <a class="nav-link text-uppercase" href="{% url 'login' %}"><h3 class="menu">Login</h3></a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'edit_user' %}"><h3 class="menu">My Account</h3>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="{% url 'about-page' %}"><span
-                                style="color:#424242; font-family:'Quicksand';"
-                                class="mb-0 h3"> About</span></a>
+                        <a class="nav-link text-uppercase" href="{% url 'logout' %}"><h3 class="menu">Logout</h3></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="{% url 'contact-page' %}"><span
-                                style="color:#424242; font-family:'Quicksand';" class="mb-0 h3"> Contact</span></a>
-                    </li>
-                    {% if not user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" href="{% url 'login' %}"><span
-                                    style="color:#424242; font-family:'Quicksand';"
-                                    class="mb-0 h3"> Login </span></a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" href="{% url 'edit_user' %}"><span
-                                    style="color:#424242; font-family:'Quicksand';"
-                                    class="mb-0 h3"> My Account</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" href="{% url 'logout' %}"><span
-                                    style="color:#424242; font-family:'Quicksand';"
-                                    class="mb-0 h3"> Logout</span></a>
-                        </li>
-                    {% endif %}
-                </ul>
+                {% endif %}
+            </ul>
 
 
         </div>
