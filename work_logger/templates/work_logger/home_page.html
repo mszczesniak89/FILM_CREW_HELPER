@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col">
                 <div class="d-flex justify-content-center">
-                    <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-5" style="--bs-bg-opacity: .7;">
+                    <div id="home1" class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-5" style="--bs-bg-opacity: .7; display: none">
                         <div class="card-body text-center">
                             <h2 class="home card-title">Welcome fellow crew member!</h2>
                             <h2 class="home card-text">Let us make your life a little bit easier</h2>
@@ -17,7 +17,7 @@
         <div class="row">
 
             <div class="col">
-                <div class="d-flex justify-content-center">
+                <div id="home2" class="d-flex justify-content-center" style="display: none">
                     {% if not user.is_authenticated %}
                         <a href="{% url 'login' %}">
                     {% else %}
@@ -35,7 +35,7 @@
 
             <div class="col">
                 <div class="d-flex justify-content-center">
-                    <div class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-2" style="--bs-bg-opacity: .7;">
+                    <div id="home3" class="bg-light p-2 rounded-3 shadow-lg px-xxl-5 mt-xl-2" style="--bs-bg-opacity: .7;display:none">
                         <div class="card-body text-center">
                             <h2 class="home card-title">One-of-a-kind work logging tool for Film Industry professionals</h2>
 
@@ -54,4 +54,14 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+<script>
+$(document).ready(function(){
+    $("#home1").fadeIn(1500);
+    $("#home2").fadeIn(1500);
+    $("#home3").fadeIn(3000);
+});
+</script>
 {% endblock %}
