@@ -258,6 +258,9 @@ class CreateShootingDayView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         subproject = SubProject.objects.get(id=self.kwargs['pk'])
+        if ShootingDay.objects.filter(subproject=self.kwargs['pk']):
+            latest_sd = ShootingDay.objects.filter(subproject=self.kwargs['pk']).order_by('-date')[0]
+            context['latest_sd'] = latest_sd
         context['subproject'] = subproject
         context['working_hours'] = subproject.terms.working_hours
         return context

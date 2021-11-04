@@ -324,7 +324,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .user_card {
     width: 30rem;
-    margin-top: 2rem;
+    /*margin-top: 2rem;*/
     margin-bottom: auto;
     background: lightgrey;
     position: relative;
@@ -382,4 +382,26 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0.4rem;
 }
 
+
+.draggable {
+    border-radius: 5px;
+    width: 240px;
+    height: 100px;
+    background-color: #f1f1f1;
+    position: absolute;
+    z-index: 1;
+}
+.draggable-header {
+    border-radius: 5px;
+    width: 240px;
+    height: 30px;
+    background-color: lightgray;
+    text-align: center;
+    line-height: 60px;
+    cursor: move;
+}
+
+.draggable-content {
+    padding: 10px;
+}
 

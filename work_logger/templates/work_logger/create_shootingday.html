@@ -2,7 +2,17 @@
 {% block zawartosc %}
 
 
+
     <div class="container h-100">
+    {% if latest_sd %}
+        <div class="draggable" id="drag1">
+            <div class="draggable-header"><h4>Latest shooting day:</h4></div>
+            <div class="draggable-content text-center">
+                <h6>Name: {{ latest_sd.name }}</h6>
+                <h6>Date: {{ latest_sd.date }}</h6>
+            </div>
+        </div>
+        {% endif %}
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
                 <div class="d-flex justify-content-center">
@@ -78,13 +88,15 @@
 
             </div>
         </div>
+
     </div>
+
 
 
 {% endblock %}
 {% block javascript %}
 
- <script>
+    <script>
         $(document).ready(function () {
             // catch the form's submit event
             $('#start_hour').blur(function () {
@@ -119,4 +131,29 @@
         })
     </script>
 
+    <script>
+        (function (elementSelector) {
+            var dragStartX, dragStartY;
+            var objInitLeft, objInitTop;
+            var inDrag = false;
+            var dragTarget = document.querySelector(elementSelector);
+            dragTarget.addEventListener("mousedown", function (e) {
+                inDrag = true;
+                objInitLeft = dragTarget.offsetLeft;
+                objInitTop = dragTarget.offsetTop;
+                dragStartX = e.pageX;
+                dragStartY = e.pageY;
+            });
+            document.addEventListener("mousemove", function (e) {
+                if (!inDrag) {
+                    return;
+                }
+                dragTarget.style.left = (objInitLeft + e.pageX - dragStartX) + "px";
+                dragTarget.style.top = (objInitTop + e.pageY - dragStartY) + "px";
+            });
+            document.addEventListener("mouseup", function (e) {
+                inDrag = false;
+            });
+        }("#drag1"))
+    </script>
 {% endblock %}
