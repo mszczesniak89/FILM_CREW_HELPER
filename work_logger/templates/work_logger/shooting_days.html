@@ -16,9 +16,14 @@
                 </tr>
                 <tr>
                     <td class="priority-1" colspan="5"><a class="nav-item nav-link"
-                                       href="{% url 'create-shootingday-view' pk=subproject.id %}"><h5
-                    >ADD NEW SHOOTING DAY</h5></a></td>
+                                                          href="{% url 'create-shootingday-view' pk=subproject.id %}">
+                        <h5 class="mb-0"
+                        >ADD NEW SHOOTING DAY</h5></a>
+                        <a class="nav-item nav-link"
+                           href="{% url 'shootingdays_pdf' subproject_id=subproject.id %}"><h6 class="m-0"
+                        >Generate PDF</h6></a></td>
                 </tr>
+
                 </thead>
             </table>
         </div>

@@ -4,7 +4,11 @@ from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import request, HttpResponseRedirect, Http404, JsonResponse
+from django.http import request, HttpResponseRedirect, Http404, JsonResponse, FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
 import iso8601
 from datetime import datetime, timedelta
 from django.shortcuts import render
@@ -237,6 +241,24 @@ class ShootingDaysView(LoginRequiredMixin, FilterView):
             context['stats_avr_hours_per_day'] = round(round(stats_total_hours_worked, 1) / ShootingDay.objects.filter(
                 subproject=self.kwargs['pk']).count(), 1)
         return context
+
+
+def shootingdays_pdf(request, subproject_id):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textobj = c.beginText()
+    textobj.setTextOrigin(inch, inch)
+    textobj.setFont("Helvetica", 14)
+    lines = [sd.name for sd in ShootingDay.objects.filter(subproject=subproject_id)]
+    for line in lines:
+        textobj.textLine(line)
+
+    c.drawText(textobj)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf, as_attachment=True, filename='ShootingDays_REPORT.pdf')
+
 
 
 class CreateShootingDayView(LoginRequiredMixin, CreateView):
