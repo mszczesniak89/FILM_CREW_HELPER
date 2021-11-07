@@ -19,9 +19,7 @@
                                                           href="{% url 'create-shootingday-view' pk=subproject.id %}">
                         <h5 class="mb-0"
                         >ADD NEW SHOOTING DAY</h5></a>
-                        <a class="nav-item nav-link"
-                           href="{% url 'shootingdays_pdf' subproject_id=subproject.id %}"><h6 class="m-0"
-                        >Generate PDF</h6></a></td>
+                    </td>
                 </tr>
 
                 </thead>
@@ -53,6 +51,11 @@
                             Hours per
                             day
                             (average): {{ stats_avr_hours_per_day }}
+                        <p class="text-start m-1" style="color:#424242; font-size: medium; font-family:'Quicksand'">
+                            <a class="text-decoration-none" style="color:#424242;"
+                               href="{% url 'shootingdays_pdf' pk=subproject.id %}">
+                                Generate PDF Report
+                            </a>
                     </td>
                 </tr>
                 <tr>
@@ -70,7 +73,8 @@
                 <tbody>
                 {% for item in object_list %}
                     <tr>
-                        <td class="priority-1"><a class="nav-item nav-link" href="{{ item.get_absolute_url }}"><h4>{{ item.name }}</h4></a>
+                        <td class="priority-1"><a class="nav-item nav-link" href="{{ item.get_absolute_url }}">
+                            <h4>{{ item.name }}</h4></a>
                         </td>
                         <td class="priority-2"><h4>{{ item.date }}</h4></td>
                         <td class="priority-4"><h5>{{ item.start_hour.time }}</h5></td>
@@ -79,7 +83,8 @@
                         <td class="priority-5"><h5>{{ item.camera_ot }}</h5></td>
                         <td class="priority-5"><h5>{{ item.toc }}</h5></td>
                         <td class="priority-5"><h5>{{ item.extras }}</h5></td>
-                        <td class="priority-1"><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}"><h6>UPDATE</h6></a>
+                        <td class="priority-1"><a class="nav-item nav-link m-0 p-0" href="{{ item.get_update_url }}">
+                            <h6>UPDATE</h6></a>
                             <a class="nav-item nav-link m-0 p-0" href="{{ item.get_delete_url }}"><h6>DELETE</h6></a>
                         </td>
                     </tr>

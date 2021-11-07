@@ -1,20 +1,18 @@
 import math
-
+import functools
 from braces.views import UserFormKwargsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import request, HttpResponseRedirect, Http404, JsonResponse, FileResponse
-import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
 import iso8601
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
+from django_weasyprint import WeasyTemplateResponseMixin
+from django_weasyprint.views import WeasyTemplateResponse
 from accounts.models import CustomUser
 from accounts.forms import CustomUserCreationForm
 from work_logger.models import Project, SubProject, ShootingDay, Terms, CrewMember
@@ -243,22 +241,36 @@ class ShootingDaysView(LoginRequiredMixin, FilterView):
         return context
 
 
-def shootingdays_pdf(request, subproject_id):
-    buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textobj = c.beginText()
-    textobj.setTextOrigin(inch, inch)
-    textobj.setFont("Helvetica", 14)
-    lines = [sd.name for sd in ShootingDay.objects.filter(subproject=subproject_id)]
-    for line in lines:
-        textobj.textLine(line)
+class ShootingDaysPDFView(LoginRequiredMixin, FilterView):
+    def get_queryset(self):
+        user = self.request.user
+        return ShootingDay.objects.filter(subproject__parent__user=user).filter(subproject=self.kwargs['pk'])
 
-    c.drawText(textobj)
-    c.showPage()
-    c.save()
-    buf.seek(0)
-    return FileResponse(buf, as_attachment=True, filename='ShootingDays_REPORT.pdf')
+    model = ShootingDay
+    context_object_name = 'object_list'
+    filterset_class = ShootingDayFilter
+    template_name = 'work_logger/shooting_days_pdf.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subproject'] = SubProject.objects.get(id=self.kwargs['pk'])
+        if ShootingDay.objects.filter(subproject=self.kwargs['pk']).count() > 0:
+            context['stats_days'] = ShootingDay.objects.filter(subproject=self.kwargs['pk']).count()
+            stats_total_hours_worked = 0
+            for day in ShootingDay.objects.filter(subproject=self.kwargs['pk']):
+                diff = day.end_hour - day.start_hour
+                diff_in_hours = diff.total_seconds() / 3600
+                stats_total_hours_worked += diff_in_hours
+            context['stats_total_hours_worked'] = round(stats_total_hours_worked, 1)
+            context['stats_avr_hours_per_day'] = round(round(stats_total_hours_worked, 1) / ShootingDay.objects.filter(
+                subproject=self.kwargs['pk']).count(), 1)
+        return context
+
+
+class ShootingDaysPDF(WeasyTemplateResponseMixin, ShootingDaysPDFView):
+    pdf_attachment = True
+    response_class = WeasyTemplateResponse
+    pdf_filename = 'ShootingDaysReport.pdf'
 
 
 class CreateShootingDayView(LoginRequiredMixin, CreateView):
