@@ -20,7 +20,8 @@
 <body>
 <style> @page {
     size: letter landscape;
-} </style>
+}
+</style>
 <div class="d-flex justify-content-center">
     <h1 class="logo">
         Film Crew Helper
@@ -63,9 +64,7 @@
             <tbody>
             {% for item in object_list %}
                 <tr>
-                    <td class="priority-1"><a class="nav-item nav-link" href="{{ item.get_absolute_url }}">
-                        <h5>{{ item.name }}</h5></a>
-                    </td>
+                    <td class="priority-1"><h5>{{ item.name }}</h5></td>
                     <td class="priority-2"><h5>{{ item.date }}</h5></td>
                     <td class="priority-4"><h6>{{ item.start_hour.time }}</h6></td>
                     <td class="priority-4"><h6>{{ item.end_hour.time }}</h6></td>
